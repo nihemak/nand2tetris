@@ -1,0 +1,154 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    Not(in=sel[0], out=notsel0);
+    Not(in=sel[1], out=notsel1);
+
+    And(a=notsel1, b=notsel0, out=sela);
+    And(a=notsel1, b=sel[0], out=selb);
+    And(a=sel[1], b=notsel0, out=selc);
+    And(a=sel[1], b=sel[0], out=seld);
+
+    And(a=a[0], b=sela, out=a0);
+    And(a=b[0], b=selb, out=b0);
+    And(a=c[0], b=selc, out=c0);
+    And(a=d[0], b=seld, out=d0);
+    Or(a=a0, b=b0, out=ab0);
+    Or(a=c0, b=d0, out=cd0);
+    Or(a=ab0, b=cd0, out=out[0]);
+
+    And(a=a[1], b=sela, out=a1);
+    And(a=b[1], b=selb, out=b1);
+    And(a=c[1], b=selc, out=c1);
+    And(a=d[1], b=seld, out=d1);
+    Or(a=a1, b=b1, out=ab1);
+    Or(a=c1, b=d1, out=cd1);
+    Or(a=ab1, b=cd1, out=out[1]);
+
+    And(a=a[2], b=sela, out=a2);
+    And(a=b[2], b=selb, out=b2);
+    And(a=c[2], b=selc, out=c2);
+    And(a=d[2], b=seld, out=d2);
+    Or(a=a2, b=b2, out=ab2);
+    Or(a=c2, b=d2, out=cd2);
+    Or(a=ab2, b=cd2, out=out[2]);
+
+    And(a=a[3], b=sela, out=a3);
+    And(a=b[3], b=selb, out=b3);
+    And(a=c[3], b=selc, out=c3);
+    And(a=d[3], b=seld, out=d3);
+    Or(a=a3, b=b3, out=ab3);
+    Or(a=c3, b=d3, out=cd3);
+    Or(a=ab3, b=cd3, out=out[3]);
+
+    And(a=a[4], b=sela, out=a4);
+    And(a=b[4], b=selb, out=b4);
+    And(a=c[4], b=selc, out=c4);
+    And(a=d[4], b=seld, out=d4);
+    Or(a=a4, b=b4, out=ab4);
+    Or(a=c4, b=d4, out=cd4);
+    Or(a=ab4, b=cd4, out=out[4]);
+
+    And(a=a[5], b=sela, out=a5);
+    And(a=b[5], b=selb, out=b5);
+    And(a=c[5], b=selc, out=c5);
+    And(a=d[5], b=seld, out=d5);
+    Or(a=a5, b=b5, out=ab5);
+    Or(a=c5, b=d5, out=cd5);
+    Or(a=ab5, b=cd5, out=out[5]);
+
+    And(a=a[6], b=sela, out=a6);
+    And(a=b[6], b=selb, out=b6);
+    And(a=c[6], b=selc, out=c6);
+    And(a=d[6], b=seld, out=d6);
+    Or(a=a6, b=b6, out=ab6);
+    Or(a=c6, b=d6, out=cd6);
+    Or(a=ab6, b=cd6, out=out[6]);
+
+    And(a=a[7], b=sela, out=a7);
+    And(a=b[7], b=selb, out=b7);
+    And(a=c[7], b=selc, out=c7);
+    And(a=d[7], b=seld, out=d7);
+    Or(a=a7, b=b7, out=ab7);
+    Or(a=c7, b=d7, out=cd7);
+    Or(a=ab7, b=cd7, out=out[7]);
+
+    And(a=a[8], b=sela, out=a8);
+    And(a=b[8], b=selb, out=b8);
+    And(a=c[8], b=selc, out=c8);
+    And(a=d[8], b=seld, out=d8);
+    Or(a=a8, b=b8, out=ab8);
+    Or(a=c8, b=d8, out=cd8);
+    Or(a=ab8, b=cd8, out=out[8]);
+
+    And(a=a[9], b=sela, out=a9);
+    And(a=b[9], b=selb, out=b9);
+    And(a=c[9], b=selc, out=c9);
+    And(a=d[9], b=seld, out=d9);
+    Or(a=a9, b=b9, out=ab9);
+    Or(a=c9, b=d9, out=cd9);
+    Or(a=ab9, b=cd9, out=out[9]);
+
+    And(a=a[10], b=sela, out=a10);
+    And(a=b[10], b=selb, out=b10);
+    And(a=c[10], b=selc, out=c10);
+    And(a=d[10], b=seld, out=d10);
+    Or(a=a10, b=b10, out=ab10);
+    Or(a=c10, b=d10, out=cd10);
+    Or(a=ab10, b=cd10, out=out[10]);
+
+    And(a=a[11], b=sela, out=a11);
+    And(a=b[11], b=selb, out=b11);
+    And(a=c[11], b=selc, out=c11);
+    And(a=d[11], b=seld, out=d11);
+    Or(a=a11, b=b11, out=ab11);
+    Or(a=c11, b=d11, out=cd11);
+    Or(a=ab11, b=cd11, out=out[11]);
+
+    And(a=a[12], b=sela, out=a12);
+    And(a=b[12], b=selb, out=b12);
+    And(a=c[12], b=selc, out=c12);
+    And(a=d[12], b=seld, out=d12);
+    Or(a=a12, b=b12, out=ab12);
+    Or(a=c12, b=d12, out=cd12);
+    Or(a=ab12, b=cd12, out=out[12]);
+
+    And(a=a[13], b=sela, out=a13);
+    And(a=b[13], b=selb, out=b13);
+    And(a=c[13], b=selc, out=c13);
+    And(a=d[13], b=seld, out=d13);
+    Or(a=a13, b=b13, out=ab13);
+    Or(a=c13, b=d13, out=cd13);
+    Or(a=ab13, b=cd13, out=out[13]);
+
+    And(a=a[14], b=sela, out=a14);
+    And(a=b[14], b=selb, out=b14);
+    And(a=c[14], b=selc, out=c14);
+    And(a=d[14], b=seld, out=d14);
+    Or(a=a14, b=b14, out=ab14);
+    Or(a=c14, b=d14, out=cd14);
+    Or(a=ab14, b=cd14, out=out[14]);
+
+    And(a=a[15], b=sela, out=a15);
+    And(a=b[15], b=selb, out=b15);
+    And(a=c[15], b=selc, out=c15);
+    And(a=d[15], b=seld, out=d15);
+    Or(a=a15, b=b15, out=ab15);
+    Or(a=c15, b=d15, out=cd15);
+    Or(a=ab15, b=cd15, out=out[15]);
+}
