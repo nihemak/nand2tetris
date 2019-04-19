@@ -13,3 +13,4 @@
 ./nand2tetris/tools/HardwareSimulator.sh 01/Or8Way.tst
 ./nand2tetris/tools/HardwareSimulator.sh 01/Mux4Way16.tst
 ./nand2tetris/tools/HardwareSimulator.sh 01/Mux8Way16.tst
+./nand2tetris/tools/HardwareSimulator.sh 01/DMux4Way.tst
