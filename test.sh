@@ -18,3 +18,4 @@
 
 ./nand2tetris/tools/HardwareSimulator.sh 02/HalfAdder.tst
 ./nand2tetris/tools/HardwareSimulator.sh 02/FullAdder.tst
+./nand2tetris/tools/HardwareSimulator.sh 02/Add16.tst
