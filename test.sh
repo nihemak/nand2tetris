@@ -17,3 +17,4 @@
 ./nand2tetris/tools/HardwareSimulator.sh 01/DMux8Way.tst
 
 ./nand2tetris/tools/HardwareSimulator.sh 02/HalfAdder.tst
+./nand2tetris/tools/HardwareSimulator.sh 02/FullAdder.tst
