@@ -20,3 +20,5 @@
 ./nand2tetris/tools/HardwareSimulator.sh 02/FullAdder.tst
 ./nand2tetris/tools/HardwareSimulator.sh 02/Add16.tst
 ./nand2tetris/tools/HardwareSimulator.sh 02/Inc16.tst
+./nand2tetris/tools/HardwareSimulator.sh 02/ALU-nostat.tst
+./nand2tetris/tools/HardwareSimulator.sh 02/ALU.tst
