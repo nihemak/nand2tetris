@@ -24,3 +24,4 @@
 ./nand2tetris/tools/HardwareSimulator.sh 02/ALU.tst
 
 ./nand2tetris/tools/HardwareSimulator.sh 03/a/Bit.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/a/Register.tst
