@@ -25,3 +25,4 @@
 
 ./nand2tetris/tools/HardwareSimulator.sh 03/a/Bit.tst
 ./nand2tetris/tools/HardwareSimulator.sh 03/a/Register.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/a/RAM8.tst
