@@ -22,3 +22,12 @@
 ./nand2tetris/tools/HardwareSimulator.sh 02/Inc16.tst
 ./nand2tetris/tools/HardwareSimulator.sh 02/ALU-nostat.tst
 ./nand2tetris/tools/HardwareSimulator.sh 02/ALU.tst
+
+./nand2tetris/tools/HardwareSimulator.sh 03/a/Bit.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/a/Register.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/a/RAM8.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/a/RAM64.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/b/RAM512.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/b/RAM4K.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/b/RAM16K.tst
+./nand2tetris/tools/HardwareSimulator.sh 03/a/PC.tst
