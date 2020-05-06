@@ -1,2 +1,9 @@
+.vscode/
 *.out
 /nand2tetris*
+/06/AssemblerL/*.asm
+/06/AssemblerL/*.hack
+/06/AssemblerL/AssemblerL
+/06/Assembler/*.asm
+/06/Assembler/*.hack
+/06/Assembler/Assembler
