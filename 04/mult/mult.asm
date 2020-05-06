@@ -16,15 +16,15 @@
         @n
         D=M
         @END
-        D; JEQ
+        D;JEQ
         @R0
         D=M
         @R2
-        M=M+D
+        M=D+M
         @n
         M=M-1
         @LOOP
-        0; JMP
+        0;JMP
 (END)
         @END
-        0; JMP
+        0;JMP
