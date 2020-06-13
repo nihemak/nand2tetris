@@ -124,3 +124,6 @@ diff PongExpected.hack Pong.hack
 echo $?
 
 cd -
+
+./test07.sh
+./test08.sh
