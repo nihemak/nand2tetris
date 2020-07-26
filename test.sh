@@ -127,3 +127,4 @@ cd -
 
 ./test07.sh
 ./test08.sh
+./test10.sh
