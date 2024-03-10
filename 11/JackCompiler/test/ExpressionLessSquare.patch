@@ -1,0 +1,1520 @@
+diff -u -w -r expect/Main.xml expect_fix/Main.xml
+--- expect/Main.xml	2024-03-04 21:26:09.000000000 +0900
++++ expect_fix/Main.xml	2024-03-04 21:26:10.000000000 +0900
+@@ -1,17 +1,17 @@
+ <class>
+   <keyword> class </keyword>
+-  <identifier> Main </identifier>
++<identifier category="class" status="defined"> Main </identifier>
+   <symbol> { </symbol>
+   <classVarDec>
+     <keyword> static </keyword>
+     <keyword> boolean </keyword>
+-    <identifier> test </identifier>
++<identifier category="static" status="defined" kind="static" type="boolean" index="0"> test </identifier>
+     <symbol> ; </symbol>
+   </classVarDec>
+   <subroutineDec>
+     <keyword> function </keyword>
+     <keyword> void </keyword>
+-    <identifier> main </identifier>
++<identifier category="subroutine" status="defined"> main </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -20,27 +20,27 @@
+       <symbol> { </symbol>
+       <varDec>
+         <keyword> var </keyword>
+-        <identifier> SquareGame </identifier>
+-        <identifier> game </identifier>
++<identifier category="class" status="used"> SquareGame </identifier>
++<identifier category="var" status="defined" kind="var" type="SquareGame" index="0"> game </identifier>
+         <symbol> ; </symbol>
+       </varDec>
+       <statements>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> game </identifier>
++<identifier category="var" status="used" kind="var" type="SquareGame" index="0"> game </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> game </identifier>
++<identifier category="var" status="used" kind="var" type="SquareGame" index="0"> game </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+         </letStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> game </identifier>
++<identifier category="var" status="used" kind="var" type="SquareGame" index="0"> game </identifier>
+           <symbol> . </symbol>
+-          <identifier> run </identifier>
++<identifier category="subroutine" status="used"> run </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+           </expressionList>
+@@ -49,9 +49,9 @@
+         </doStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> game </identifier>
++<identifier category="var" status="used" kind="var" type="SquareGame" index="0"> game </identifier>
+           <symbol> . </symbol>
+-          <identifier> dispose </identifier>
++<identifier category="subroutine" status="used"> dispose </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+           </expressionList>
+@@ -69,7 +69,7 @@
+   <subroutineDec>
+     <keyword> function </keyword>
+     <keyword> void </keyword>
+-    <identifier> more </identifier>
++<identifier category="subroutine" status="defined"> more </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -79,7 +79,7 @@
+       <varDec>
+         <keyword> var </keyword>
+         <keyword> boolean </keyword>
+-        <identifier> b </identifier>
++<identifier category="var" status="defined" kind="var" type="boolean" index="0"> b </identifier>
+         <symbol> ; </symbol>
+       </varDec>
+       <statements>
+@@ -88,7 +88,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> b </identifier>
++<identifier category="var" status="used" kind="var" type="boolean" index="0"> b </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+Only in expect: MainT.xml
+diff -u -w -r expect/Square.xml expect_fix/Square.xml
+--- expect/Square.xml	2024-03-04 21:26:09.000000000 +0900
++++ expect_fix/Square.xml	2024-03-04 21:26:10.000000000 +0900
+@@ -1,35 +1,35 @@
+ <class>
+   <keyword> class </keyword>
+-  <identifier> Square </identifier>
++<identifier category="class" status="defined"> Square </identifier>
+   <symbol> { </symbol>
+   <classVarDec>
+     <keyword> field </keyword>
+     <keyword> int </keyword>
+-    <identifier> x </identifier>
++<identifier category="field" status="defined" kind="field" type="int" index="0"> x </identifier>
+     <symbol> , </symbol>
+-    <identifier> y </identifier>
++<identifier category="field" status="defined" kind="field" type="int" index="1"> y </identifier>
+     <symbol> ; </symbol>
+   </classVarDec>
+   <classVarDec>
+     <keyword> field </keyword>
+     <keyword> int </keyword>
+-    <identifier> size </identifier>
++<identifier category="field" status="defined" kind="field" type="int" index="2"> size </identifier>
+     <symbol> ; </symbol>
+   </classVarDec>
+   <subroutineDec>
+     <keyword> constructor </keyword>
+-    <identifier> Square </identifier>
+-    <identifier> new </identifier>
++<identifier category="class" status="used"> Square </identifier>
++<identifier category="subroutine" status="defined"> new </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+       <keyword> int </keyword>
+-      <identifier> Ax </identifier>
++<identifier category="argument" status="defined" kind="argument" type="int" index="0"> Ax </identifier>
+       <symbol> , </symbol>
+       <keyword> int </keyword>
+-      <identifier> Ay </identifier>
++<identifier category="argument" status="defined" kind="argument" type="int" index="1"> Ay </identifier>
+       <symbol> , </symbol>
+       <keyword> int </keyword>
+-      <identifier> Asize </identifier>
++<identifier category="argument" status="defined" kind="argument" type="int" index="2"> Asize </identifier>
+     </parameterList>
+     <symbol> ) </symbol>
+     <subroutineBody>
+@@ -37,40 +37,40 @@
+       <statements>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> Ax </identifier>
++<identifier category="argument" status="used" kind="argument" type="int" index="0"> Ax </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+         </letStatement>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> Ay </identifier>
++<identifier category="argument" status="used" kind="argument" type="int" index="1"> Ay </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+         </letStatement>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> size </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="2"> size </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> Asize </identifier>
++<identifier category="argument" status="used" kind="argument" type="int" index="2"> Asize </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+         </letStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> draw </identifier>
++<identifier category="subroutine" status="used"> draw </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+           </expressionList>
+@@ -81,7 +81,7 @@
+           <keyword> return </keyword>
+           <expression>
+             <term>
+-              <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+@@ -93,7 +93,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> dispose </identifier>
++<identifier category="subroutine" status="defined"> dispose </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -103,9 +103,9 @@
+       <statements>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Memory </identifier>
++<identifier category="class" status="used"> Memory </identifier>
+           <symbol> . </symbol>
+-          <identifier> deAlloc </identifier>
++<identifier category="subroutine" status="used"> deAlloc </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+@@ -128,7 +128,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> draw </identifier>
++<identifier category="subroutine" status="defined"> draw </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -138,14 +138,14 @@
+       <statements>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+           <symbol> . </symbol>
+-          <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+               <term>
+-                <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               </term>
+             </expression>
+           </expressionList>
+@@ -154,32 +154,32 @@
+         </doStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+           <symbol> . </symbol>
+-          <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+               <term>
+-                <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               </term>
+             </expression>
+             <symbol> , </symbol>
+             <expression>
+               <term>
+-                <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+               </term>
+             </expression>
+             <symbol> , </symbol>
+             <expression>
+               <term>
+-                <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               </term>
+             </expression>
+             <symbol> , </symbol>
+             <expression>
+               <term>
+-                <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+               </term>
+             </expression>
+           </expressionList>
+@@ -197,7 +197,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> erase </identifier>
++<identifier category="subroutine" status="defined"> erase </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -207,14 +207,14 @@
+       <statements>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+           <symbol> . </symbol>
+-          <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+               <term>
+-                <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               </term>
+             </expression>
+           </expressionList>
+@@ -223,32 +223,32 @@
+         </doStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+           <symbol> . </symbol>
+-          <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+               <term>
+-                <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               </term>
+             </expression>
+             <symbol> , </symbol>
+             <expression>
+               <term>
+-                <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+               </term>
+             </expression>
+             <symbol> , </symbol>
+             <expression>
+               <term>
+-                <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               </term>
+             </expression>
+             <symbol> , </symbol>
+             <expression>
+               <term>
+-                <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+               </term>
+             </expression>
+           </expressionList>
+@@ -266,7 +266,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> incSize </identifier>
++<identifier category="subroutine" status="defined"> incSize </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -279,7 +279,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -287,7 +287,7 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> erase </identifier>
++<identifier category="subroutine" status="used"> erase </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -296,18 +296,18 @@
+             </doStatement>
+             <letStatement>
+               <keyword> let </keyword>
+-              <identifier> size </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="2"> size </identifier>
+               <symbol> = </symbol>
+               <expression>
+                 <term>
+-                  <identifier> size </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="2"> size </identifier>
+                 </term>
+               </expression>
+               <symbol> ; </symbol>
+             </letStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> draw </identifier>
++<identifier category="subroutine" status="used"> draw </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -328,7 +328,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> decSize </identifier>
++<identifier category="subroutine" status="defined"> decSize </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -341,7 +341,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> size </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="2"> size </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -349,7 +349,7 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> erase </identifier>
++<identifier category="subroutine" status="used"> erase </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -358,18 +358,18 @@
+             </doStatement>
+             <letStatement>
+               <keyword> let </keyword>
+-              <identifier> size </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="2"> size </identifier>
+               <symbol> = </symbol>
+               <expression>
+                 <term>
+-                  <identifier> size </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="2"> size </identifier>
+                 </term>
+               </expression>
+               <symbol> ; </symbol>
+             </letStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> draw </identifier>
++<identifier category="subroutine" status="used"> draw </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -390,7 +390,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> moveUp </identifier>
++<identifier category="subroutine" status="defined"> moveUp </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -403,7 +403,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -411,14 +411,14 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -427,32 +427,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -461,25 +461,25 @@
+             </doStatement>
+             <letStatement>
+               <keyword> let </keyword>
+-              <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+               <symbol> = </symbol>
+               <expression>
+                 <term>
+-                  <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                 </term>
+               </expression>
+               <symbol> ; </symbol>
+             </letStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -488,32 +488,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -534,7 +534,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> moveDown </identifier>
++<identifier category="subroutine" status="defined"> moveDown </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -547,7 +547,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -555,14 +555,14 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -571,32 +571,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -605,25 +605,25 @@
+             </doStatement>
+             <letStatement>
+               <keyword> let </keyword>
+-              <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+               <symbol> = </symbol>
+               <expression>
+                 <term>
+-                  <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                 </term>
+               </expression>
+               <symbol> ; </symbol>
+             </letStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -632,32 +632,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -678,7 +678,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> moveLeft </identifier>
++<identifier category="subroutine" status="defined"> moveLeft </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -691,7 +691,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -699,14 +699,14 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -715,32 +715,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -749,25 +749,25 @@
+             </doStatement>
+             <letStatement>
+               <keyword> let </keyword>
+-              <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               <symbol> = </symbol>
+               <expression>
+                 <term>
+-                  <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                 </term>
+               </expression>
+               <symbol> ; </symbol>
+             </letStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -776,32 +776,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -822,7 +822,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> moveRight </identifier>
++<identifier category="subroutine" status="defined"> moveRight </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -835,7 +835,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -843,14 +843,14 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -859,32 +859,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -893,25 +893,25 @@
+             </doStatement>
+             <letStatement>
+               <keyword> let </keyword>
+-              <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+               <symbol> = </symbol>
+               <expression>
+                 <term>
+-                  <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                 </term>
+               </expression>
+               <symbol> ; </symbol>
+             </letStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> setColor </identifier>
++<identifier category="subroutine" status="used"> setColor </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+@@ -920,32 +920,32 @@
+             </doStatement>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> Screen </identifier>
++<identifier category="class" status="used"> Screen </identifier>
+               <symbol> . </symbol>
+-              <identifier> drawRectangle </identifier>
++<identifier category="subroutine" status="used"> drawRectangle </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> x </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="0"> x </identifier>
+                   </term>
+                 </expression>
+                 <symbol> , </symbol>
+                 <expression>
+                   <term>
+-                    <identifier> y </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> y </identifier>
+                   </term>
+                 </expression>
+               </expressionList>
+diff -u -w -r expect/SquareGame.xml expect_fix/SquareGame.xml
+--- expect/SquareGame.xml	2024-03-04 21:26:09.000000000 +0900
++++ expect_fix/SquareGame.xml	2024-03-04 21:26:10.000000000 +0900
+@@ -1,23 +1,23 @@
+ <class>
+   <keyword> class </keyword>
+-  <identifier> SquareGame </identifier>
++<identifier category="class" status="defined"> SquareGame </identifier>
+   <symbol> { </symbol>
+   <classVarDec>
+     <keyword> field </keyword>
+-    <identifier> Square </identifier>
+-    <identifier> square </identifier>
++<identifier category="class" status="used"> Square </identifier>
++<identifier category="field" status="defined" kind="field" type="Square" index="0"> square </identifier>
+     <symbol> ; </symbol>
+   </classVarDec>
+   <classVarDec>
+     <keyword> field </keyword>
+     <keyword> int </keyword>
+-    <identifier> direction </identifier>
++<identifier category="field" status="defined" kind="field" type="int" index="1"> direction </identifier>
+     <symbol> ; </symbol>
+   </classVarDec>
+   <subroutineDec>
+     <keyword> constructor </keyword>
+-    <identifier> SquareGame </identifier>
+-    <identifier> new </identifier>
++<identifier category="class" status="used"> SquareGame </identifier>
++<identifier category="subroutine" status="defined"> new </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -27,22 +27,22 @@
+       <statements>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+         </letStatement>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+@@ -51,7 +51,7 @@
+           <keyword> return </keyword>
+           <expression>
+             <term>
+-              <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+@@ -63,7 +63,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> dispose </identifier>
++<identifier category="subroutine" status="defined"> dispose </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -73,9 +73,9 @@
+       <statements>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+           <symbol> . </symbol>
+-          <identifier> dispose </identifier>
++<identifier category="subroutine" status="used"> dispose </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+           </expressionList>
+@@ -84,14 +84,14 @@
+         </doStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Memory </identifier>
++<identifier category="class" status="used"> Memory </identifier>
+           <symbol> . </symbol>
+-          <identifier> deAlloc </identifier>
++<identifier category="subroutine" status="used"> deAlloc </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+               <term>
+-                <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+               </term>
+             </expression>
+           </expressionList>
+@@ -109,7 +109,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> moveSquare </identifier>
++<identifier category="subroutine" status="defined"> moveSquare </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -122,7 +122,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -130,9 +130,9 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+               <symbol> . </symbol>
+-              <identifier> moveUp </identifier>
++<identifier category="subroutine" status="used"> moveUp </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -147,7 +147,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -155,9 +155,9 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+               <symbol> . </symbol>
+-              <identifier> moveDown </identifier>
++<identifier category="subroutine" status="used"> moveDown </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -172,7 +172,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -180,9 +180,9 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+               <symbol> . </symbol>
+-              <identifier> moveLeft </identifier>
++<identifier category="subroutine" status="used"> moveLeft </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -197,7 +197,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -205,9 +205,9 @@
+           <statements>
+             <doStatement>
+               <keyword> do </keyword>
+-              <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+               <symbol> . </symbol>
+-              <identifier> moveRight </identifier>
++<identifier category="subroutine" status="used"> moveRight </identifier>
+               <symbol> ( </symbol>
+               <expressionList>
+               </expressionList>
+@@ -219,14 +219,14 @@
+         </ifStatement>
+         <doStatement>
+           <keyword> do </keyword>
+-          <identifier> Sys </identifier>
++<identifier category="class" status="used"> Sys </identifier>
+           <symbol> . </symbol>
+-          <identifier> wait </identifier>
++<identifier category="subroutine" status="used"> wait </identifier>
+           <symbol> ( </symbol>
+           <expressionList>
+             <expression>
+               <term>
+-                <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+               </term>
+             </expression>
+           </expressionList>
+@@ -244,7 +244,7 @@
+   <subroutineDec>
+     <keyword> method </keyword>
+     <keyword> void </keyword>
+-    <identifier> run </identifier>
++<identifier category="subroutine" status="defined"> run </identifier>
+     <symbol> ( </symbol>
+     <parameterList>
+     </parameterList>
+@@ -254,23 +254,23 @@
+       <varDec>
+         <keyword> var </keyword>
+         <keyword> char </keyword>
+-        <identifier> key </identifier>
++<identifier category="var" status="defined" kind="var" type="char" index="0"> key </identifier>
+         <symbol> ; </symbol>
+       </varDec>
+       <varDec>
+         <keyword> var </keyword>
+         <keyword> boolean </keyword>
+-        <identifier> exit </identifier>
++<identifier category="var" status="defined" kind="var" type="boolean" index="1"> exit </identifier>
+         <symbol> ; </symbol>
+       </varDec>
+       <statements>
+         <letStatement>
+           <keyword> let </keyword>
+-          <identifier> exit </identifier>
++<identifier category="var" status="used" kind="var" type="boolean" index="1"> exit </identifier>
+           <symbol> = </symbol>
+           <expression>
+             <term>
+-              <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+             </term>
+           </expression>
+           <symbol> ; </symbol>
+@@ -280,7 +280,7 @@
+           <symbol> ( </symbol>
+           <expression>
+             <term>
+-              <identifier> exit </identifier>
++<identifier category="var" status="used" kind="var" type="boolean" index="1"> exit </identifier>
+             </term>
+           </expression>
+           <symbol> ) </symbol>
+@@ -291,7 +291,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -299,18 +299,18 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+                 </letStatement>
+                 <doStatement>
+                   <keyword> do </keyword>
+-                  <identifier> moveSquare </identifier>
++<identifier category="subroutine" status="used"> moveSquare </identifier>
+                   <symbol> ( </symbol>
+                   <expressionList>
+                   </expressionList>
+@@ -325,7 +325,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -333,11 +333,11 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> exit </identifier>
++<identifier category="var" status="used" kind="var" type="boolean" index="1"> exit </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> exit </identifier>
++<identifier category="var" status="used" kind="var" type="boolean" index="1"> exit </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+@@ -350,7 +350,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -358,9 +358,9 @@
+               <statements>
+                 <doStatement>
+                   <keyword> do </keyword>
+-                  <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+                   <symbol> . </symbol>
+-                  <identifier> decSize </identifier>
++<identifier category="subroutine" status="used"> decSize </identifier>
+                   <symbol> ( </symbol>
+                   <expressionList>
+                   </expressionList>
+@@ -375,7 +375,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -383,9 +383,9 @@
+               <statements>
+                 <doStatement>
+                   <keyword> do </keyword>
+-                  <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+                   <symbol> . </symbol>
+-                  <identifier> incSize </identifier>
++<identifier category="subroutine" status="used"> incSize </identifier>
+                   <symbol> ( </symbol>
+                   <expressionList>
+                   </expressionList>
+@@ -400,7 +400,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -408,11 +408,11 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> exit </identifier>
++<identifier category="var" status="used" kind="var" type="boolean" index="1"> exit </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+@@ -425,7 +425,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -433,11 +433,11 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+@@ -450,7 +450,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -458,11 +458,11 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> square </identifier>
++<identifier category="field" status="used" kind="field" type="Square" index="0"> square </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+@@ -475,7 +475,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -483,11 +483,11 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> direction </identifier>
++<identifier category="field" status="used" kind="field" type="int" index="1"> direction </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+@@ -500,7 +500,7 @@
+               <symbol> ( </symbol>
+               <expression>
+                 <term>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                 </term>
+               </expression>
+               <symbol> ) </symbol>
+@@ -508,18 +508,18 @@
+               <statements>
+                 <letStatement>
+                   <keyword> let </keyword>
+-                  <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                   <symbol> = </symbol>
+                   <expression>
+                     <term>
+-                      <identifier> key </identifier>
++<identifier category="var" status="used" kind="var" type="char" index="0"> key </identifier>
+                     </term>
+                   </expression>
+                   <symbol> ; </symbol>
+                 </letStatement>
+                 <doStatement>
+                   <keyword> do </keyword>
+-                  <identifier> moveSquare </identifier>
++<identifier category="subroutine" status="used"> moveSquare </identifier>
+                   <symbol> ( </symbol>
+                   <expressionList>
+                   </expressionList>
+Only in expect: SquareGameT.xml
+Only in expect: SquareT.xml
