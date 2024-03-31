@@ -1,0 +1,142 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Math.jack
+/**
+ *  A library of commonly used mathematical functions.
+ *  All functions runs in O(n), where n is the number of bits used
+ *  for representing a two's complement integer value (16 in the Hack computer). 
+ *  Note: Jack compilers implement multiplication and division
+ *  using calls to OS functions in this class.
+ */
+class Math {
+    static int n;             // Number of bits used for representing a two's complement integer
+    static Array powersOfTwo; // Stores 2^0, 2^1, 2^2,..., 2^(n-1)
+
+    // Initializes the Math library.
+    function void init() {
+        var int i;
+
+        let n = 16;
+        let powersOfTwo = Array.new(n);
+        let powersOfTwo[0] = 1;
+        let i = 1;
+        while (i < n) {
+            let powersOfTwo[i] = powersOfTwo[i - 1] + powersOfTwo[i - 1];
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    /** Returns the product of x and y. 
+     *  When a Jack compiler detects the multiplication operator '*'
+     *  in an expression, it handles it by invoking this method. 
+     *  Thus, in Jack, x * y and Math.multiply(x,y) return the same value. */
+    function int multiply(int x, int y) {
+        var int sum, shiftedX, j;
+        var bool isNeg;
+
+        let isNeg = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
+        let x = Math.abs(x);
+        let y = Math.abs(y);
+
+        let sum = 0;
+        let shiftedX = x;
+        let j = 0;
+        while (j < n) {
+            if (Math.bit(y, j)) {
+                let sum = sum + shiftedX;
+            }
+            let shiftedX = shiftedX + shiftedX;
+            let j = j + 1;
+        }
+
+        if (isNeg) {
+            return -sum;
+        }
+        return sum;
+    }
+
+    /** Returns the integer part of x / y.
+     *  When a Jack compiler detects the division operator '/'
+     *  an an expression, it handles it by invoking this method.
+     *  Thus, x/y and Math.divide(x,y) return the same value. */
+    function int divide(int x, int y) {
+        var int q, qy;
+        var bool isNeg;
+
+        if (y = 0) {
+            do Sys.error(3);
+        }
+
+        let isNeg = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
+        let x = Math.abs(x);
+        let y = Math.abs(y);
+
+        if (y > x) {
+            return 0;
+        }
+        let q = Math.divide(x, y + y);
+        let qy = q * y;
+        if ((x - (qy + qy)) < y) {
+            let q = q + q;
+        } else {
+            let q = q + q + 1;
+        }
+        if (isNeg) {
+            let q = -q;
+        }
+        return q;
+    }
+
+    /** Returns the integer part of the square root of x. */
+    function int sqrt(int x) {
+        var int y, j;
+        var int y_1, y_2;
+
+        if (x < 0) {
+            do Sys.error(4);
+        }
+
+        let y = 0;
+        let j = n / 2 - 1;
+        while ((j > 0) | (j = 0)) {
+            let y_1 = y + powersOfTwo[j];
+            let y_2 = y_1 * y_1;
+            if ((y_2 < x) | (y_2 = x) & (y_2 > 0)) {
+                let y = y_1;
+            }
+            let j = j - 1;
+        }
+        return y;
+    }
+
+    /** Returns the greater value. */
+    function int max(int a, int b) {
+        if (a > b) {
+            return a;
+        }
+        return b;
+    }
+
+    /** Returns the smaller value. */
+    function int min(int a, int b) {
+        if (a < b) {
+            return a;
+        }
+        return b;
+    }
+
+    /** Returns the absolute value of x. */
+    function int abs(int x) {
+        if (x < 0) {
+            return -x;
+        }
+        return x;
+    }
+
+    function boolean bit(int x, int j) {
+        return x & powersOfTwo[j];
+    }
+}

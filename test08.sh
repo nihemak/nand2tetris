@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cp ./nand2tetris/projects/07/StackArithmetic/SimpleAdd/* 08/VMtranslator3/
-cp ./nand2tetris/projects/07/StackArithmetic/StackTest/* 08/VMtranslator3/
-cp ./nand2tetris/projects/07/MemoryAccess/BasicTest/* 08/VMtranslator3/
-cp ./nand2tetris/projects/07/MemoryAccess/PointerTest/* 08/VMtranslator3/
-cp ./nand2tetris/projects/07/MemoryAccess/StaticTest/* 08/VMtranslator3/
-cp ./nand2tetris/projects/08/ProgramFlow/BasicLoop/* 08/VMtranslator3/
-cp ./nand2tetris/projects/08/ProgramFlow/FibonacciSeries/* 08/VMtranslator3/
+cp ./nand2tetris/projects/7/StackArithmetic/SimpleAdd/* 08/VMtranslator3/
+cp ./nand2tetris/projects/7/StackArithmetic/StackTest/* 08/VMtranslator3/
+cp ./nand2tetris/projects/7/MemoryAccess/BasicTest/* 08/VMtranslator3/
+cp ./nand2tetris/projects/7/MemoryAccess/PointerTest/* 08/VMtranslator3/
+cp ./nand2tetris/projects/7/MemoryAccess/StaticTest/* 08/VMtranslator3/
+cp ./nand2tetris/projects/8/ProgramFlow/BasicLoop/* 08/VMtranslator3/
+cp ./nand2tetris/projects/8/ProgramFlow/FibonacciSeries/* 08/VMtranslator3/
 
 cd 08/VMtranslator3/
 
@@ -30,14 +30,14 @@ cd -
 ./nand2tetris/tools/CPUEmulator.sh 08/VMtranslator3/BasicLoop.tst
 ./nand2tetris/tools/CPUEmulator.sh 08/VMtranslator3/FibonacciSeries.tst
 
-cp ./nand2tetris/projects/07/StackArithmetic/SimpleAdd/* 08/VMtranslator4/
-cp ./nand2tetris/projects/07/StackArithmetic/StackTest/* 08/VMtranslator4/
-cp ./nand2tetris/projects/07/MemoryAccess/BasicTest/* 08/VMtranslator4/
-cp ./nand2tetris/projects/07/MemoryAccess/PointerTest/* 08/VMtranslator4/
-cp ./nand2tetris/projects/07/MemoryAccess/StaticTest/* 08/VMtranslator4/
-cp ./nand2tetris/projects/08/ProgramFlow/BasicLoop/* 08/VMtranslator4/
-cp ./nand2tetris/projects/08/ProgramFlow/FibonacciSeries/* 08/VMtranslator4/
-cp ./nand2tetris/projects/08/FunctionCalls/SimpleFunction/* 08/VMtranslator4/
+cp ./nand2tetris/projects/7/StackArithmetic/SimpleAdd/* 08/VMtranslator4/
+cp ./nand2tetris/projects/7/StackArithmetic/StackTest/* 08/VMtranslator4/
+cp ./nand2tetris/projects/7/MemoryAccess/BasicTest/* 08/VMtranslator4/
+cp ./nand2tetris/projects/7/MemoryAccess/PointerTest/* 08/VMtranslator4/
+cp ./nand2tetris/projects/7/MemoryAccess/StaticTest/* 08/VMtranslator4/
+cp ./nand2tetris/projects/8/ProgramFlow/BasicLoop/* 08/VMtranslator4/
+cp ./nand2tetris/projects/8/ProgramFlow/FibonacciSeries/* 08/VMtranslator4/
+cp ./nand2tetris/projects/8/FunctionCalls/SimpleFunction/* 08/VMtranslator4/
 
 cd 08/VMtranslator4/
 
@@ -63,9 +63,9 @@ cd -
 ./nand2tetris/tools/CPUEmulator.sh 08/VMtranslator4/FibonacciSeries.tst
 ./nand2tetris/tools/CPUEmulator.sh 08/VMtranslator4/SimpleFunction.tst
 
-cp -r ./nand2tetris/projects/08/FunctionCalls/FibonacciElement 08/VMtranslator5/
-cp -r ./nand2tetris/projects/08/FunctionCalls/StaticsTest 08/VMtranslator5/
-cp -r ./nand2tetris/projects/08/FunctionCalls/NestedCall 08/VMtranslator5/
+cp -r ./nand2tetris/projects/8/FunctionCalls/FibonacciElement 08/VMtranslator5/
+cp -r ./nand2tetris/projects/8/FunctionCalls/StaticsTest 08/VMtranslator5/
+cp -r ./nand2tetris/projects/8/FunctionCalls/NestedCall 08/VMtranslator5/
 
 cd 08/VMtranslator5/
 

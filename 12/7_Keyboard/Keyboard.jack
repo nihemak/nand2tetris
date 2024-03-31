@@ -1,0 +1,107 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Keyboard.jack
+/**
+ * A library for handling user input from the keyboard.
+ */
+class Keyboard {
+    static int KEYBOARD_ADDR;
+
+    /** Initializes the keyboard. */
+    function void init() {
+        let KEYBOARD_ADDR = 24576;
+        return;
+    } 
+
+    /**
+     * Returns the character of the currently pressed key on the keyboard;
+     * if no key is currently pressed, returns 0.
+     *
+     * Recognizes all ASCII characters, as well as the following keys:
+     * new line = 128 = String.newline()
+     * backspace = 129 = String.backspace()
+     * left arrow = 130
+     * up arrow = 131
+     * right arrow = 132
+     * down arrow = 133
+     * home = 134
+     * End = 135
+     * page up = 136
+     * page down = 137
+     * insert = 138
+     * delete = 139
+     * ESC = 140
+     * F1 - F12 = 141 - 152
+     */
+    function char keyPressed() {
+        return Memory.peek(KEYBOARD_ADDR);
+    }
+
+    /**	Waits until a key is pressed on the keyboard and released,
+     *  then echoes the key to the screen, and returns the character 
+     *  of the pressed key. */
+    function char readChar() {
+        var char c;
+
+        while(Keyboard.keyPressed() = 0) {}
+        let c = Keyboard.keyPressed();
+        while(~(Keyboard.keyPressed() = 0)) {}
+
+        if ((c > 31) & (c < 127)) {
+            do Output.printChar(c);
+        }
+        return c;
+    }
+
+    /**	Displays the message on the screen, reads from the keyboard the entered
+     *  text until a newline character is detected, echoes the text to the screen,
+     *  and returns its value. Also handles user backspaces. */
+    function String readLine(String message) {
+        var String str, newStr;
+        var int strMaxLength, strMaxLengthAdd;
+        var char c;
+        var int i;
+
+        let strMaxLengthAdd = 64;
+        let strMaxLength = strMaxLengthAdd;
+        let str = String.new(strMaxLength);
+
+        do Output.printString(message);
+
+        let c = Keyboard.readChar();
+        while (~(c = String.newLine())) {
+            if ((c = String.backSpace()) & str.length() > 0) {
+                do Output.backSpace();
+                do str.eraseLastChar();
+            }
+            if ((c > 31) & (c < 127)) {
+                if (str.length() = strMaxLength) {
+                    let newStr = String.new(strMaxLength + strMaxLengthAdd);
+                    let i = 0;
+                    while (i < strMaxLength) {
+                        do newStr.appendChar(str.charAt(i));
+                        let i = i + 1;
+                    }
+                    do str.dispose();
+                    let str = newStr;
+                    let strMaxLength = strMaxLength + strMaxLengthAdd;
+                }
+                do str.appendChar(c);
+            }
+            let c = Keyboard.readChar();
+        }
+        do Output.println();
+        return str;
+    }
+
+    /** Displays the message on the screen, reads from the keyboard the entered
+     *  text until a newline character is detected, echoes the text to the screen,
+     *  and returns its integer value (until the first non-digit character in the
+     *  entered text is detected). Also handles user backspaces. */
+    function int readInt(String message) {
+      var String str;
+      let str = Keyboard.readLine(message);
+      return str.intValue();
+    }
+}
