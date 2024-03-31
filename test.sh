@@ -50,15 +50,15 @@
 ./nand2tetris/tools/HardwareSimulator.sh 05/ComputerRect.tst
 ./nand2tetris/tools/HardwareSimulator.sh 05/ComputerRect-external.tst
 
-cp ./nand2tetris/projects/06/max/MaxL.asm 06/AssemblerL/
+cp ./nand2tetris/projects/6/max/MaxL.asm 06/AssemblerL/
 ./nand2tetris/tools/Assembler.sh 06/AssemblerL/MaxL.asm
 mv 06/AssemblerL/MaxL.hack 06/AssemblerL/MaxLExpected.hack
 
-cp ./nand2tetris/projects/06/rect/RectL.asm 06/AssemblerL/
+cp ./nand2tetris/projects/6/rect/RectL.asm 06/AssemblerL/
 ./nand2tetris/tools/Assembler.sh 06/AssemblerL/RectL.asm
 mv 06/AssemblerL/RectL.hack 06/AssemblerL/RectLExpected.hack
 
-cp ./nand2tetris/projects/06/pong/PongL.asm 06/AssemblerL/
+cp ./nand2tetris/projects/6/pong/PongL.asm 06/AssemblerL/
 ./nand2tetris/tools/Assembler.sh 06/AssemblerL/PongL.asm
 mv 06/AssemblerL/PongL.hack 06/AssemblerL/PongLExpected.hack
 
@@ -83,19 +83,19 @@ echo $?
 
 cd -
 
-cp ./nand2tetris/projects/06/add/Add.asm 06/Assembler/
+cp ./nand2tetris/projects/6/add/Add.asm 06/Assembler/
 ./nand2tetris/tools/Assembler.sh 06/Assembler/Add.asm
 mv 06/Assembler/Add.hack 06/Assembler/AddExpected.hack
 
-cp ./nand2tetris/projects/06/max/Max.asm 06/Assembler/
+cp ./nand2tetris/projects/6/max/Max.asm 06/Assembler/
 ./nand2tetris/tools/Assembler.sh 06/Assembler/Max.asm
 mv 06/Assembler/Max.hack 06/Assembler/MaxExpected.hack
 
-cp ./nand2tetris/projects/06/rect/Rect.asm 06/Assembler/
+cp ./nand2tetris/projects/6/rect/Rect.asm 06/Assembler/
 ./nand2tetris/tools/Assembler.sh 06/Assembler/Rect.asm
 mv 06/Assembler/Rect.hack 06/Assembler/RectExpected.hack
 
-cp ./nand2tetris/projects/06/pong/Pong.asm 06/Assembler/
+cp ./nand2tetris/projects/6/pong/Pong.asm 06/Assembler/
 ./nand2tetris/tools/Assembler.sh 06/Assembler/Pong.asm
 mv 06/Assembler/Pong.hack 06/Assembler/PongExpected.hack
 

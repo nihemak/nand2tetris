@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cp ./nand2tetris/projects/07/StackArithmetic/SimpleAdd/* 07/VMtranslator1/
-cp ./nand2tetris/projects/07/StackArithmetic/StackTest/* 07/VMtranslator1/
+cp ./nand2tetris/projects/7/StackArithmetic/SimpleAdd/* 07/VMtranslator1/
+cp ./nand2tetris/projects/7/StackArithmetic/StackTest/* 07/VMtranslator1/
 
 cd 07/VMtranslator1/
 
@@ -15,11 +15,11 @@ cd -
 ./nand2tetris/tools/CPUEmulator.sh 07/VMtranslator1/SimpleAdd.tst
 ./nand2tetris/tools/CPUEmulator.sh 07/VMtranslator1/StackTest.tst
 
-cp ./nand2tetris/projects/07/StackArithmetic/SimpleAdd/* 07/VMtranslator2/
-cp ./nand2tetris/projects/07/StackArithmetic/StackTest/* 07/VMtranslator2/
-cp ./nand2tetris/projects/07/MemoryAccess/BasicTest/* 07/VMtranslator2/
-cp ./nand2tetris/projects/07/MemoryAccess/PointerTest/* 07/VMtranslator2/
-cp ./nand2tetris/projects/07/MemoryAccess/StaticTest/* 07/VMtranslator2/
+cp ./nand2tetris/projects/7/StackArithmetic/SimpleAdd/* 07/VMtranslator2/
+cp ./nand2tetris/projects/7/StackArithmetic/StackTest/* 07/VMtranslator2/
+cp ./nand2tetris/projects/7/MemoryAccess/BasicTest/* 07/VMtranslator2/
+cp ./nand2tetris/projects/7/MemoryAccess/PointerTest/* 07/VMtranslator2/
+cp ./nand2tetris/projects/7/MemoryAccess/StaticTest/* 07/VMtranslator2/
 
 cd 07/VMtranslator2/
 
