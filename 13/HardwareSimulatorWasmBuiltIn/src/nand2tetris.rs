@@ -17,6 +17,7 @@ use crate::{
 #[derive(Clone)]
 pub struct Nand2Tetris {
     computer: Box<ComputerBuiltIn>,
+    screen: [bit; 131072],
 }
 
 impl Nand2Tetris {
@@ -25,6 +26,7 @@ impl Nand2Tetris {
         computer.load_program(Nand2Tetris::get_instructions());
         Nand2Tetris {
             computer: computer,
+            screen: [false; 131072],
         }
     }
 
@@ -175,13 +177,16 @@ impl ComputerSystem for Nand2Tetris {
         self.computer.step(false, Nand2Tetris::get_keyboard_press_code(keystate));
     }
 
-    fn draw(&self, renderer: &Renderer) {
+    fn draw(&mut self, renderer: &Renderer) {
         let screen = self.computer.get_screen();
         for px in 0..screen.len() {
             let x = px % 512;
             let y = px / 512;
-            let color = if screen[px] {"#000000"} else {"#FFFFFF"};
-            renderer.draw_pixel(color, x.try_into().unwrap(), y.try_into().unwrap());
+            if screen[px] != self.screen[px] {
+                let color = if screen[px] {"#000000"} else {"#FFFFFF"};
+                renderer.draw_pixel(color, x.try_into().unwrap(), y.try_into().unwrap());
+            }
         }
+        self.screen = screen;
     }
 }

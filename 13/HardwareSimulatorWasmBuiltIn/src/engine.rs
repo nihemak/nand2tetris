@@ -30,7 +30,7 @@ impl Renderer {
 pub trait ComputerSystem {
     async fn initialize(&mut self, renderer: &Renderer, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>>;
     fn update(&mut self, keystate: &KeyState);
-    fn draw(&self, renderer: &Renderer);
+    fn draw(&mut self, renderer: &Renderer);
 }
 
 // Sixty Frames per second, converted to a frame length in milliseconds
