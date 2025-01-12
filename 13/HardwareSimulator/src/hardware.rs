@@ -1777,7 +1777,7 @@ mod tests {
         key_code = u16_to_word(0b0000_0000_0100_1011);   // K
 
         memory.update(clk, input, load, address, key_code);
-        output = memory.get(clk, address);
+        memory.get(clk, address);
 
         clk = !clk;
 
@@ -1792,7 +1792,7 @@ mod tests {
         address = word_to_bit15(u16_to_word(0b100_1111_1100_1111));
 
         memory.update(clk, input, load, address, key_code);
-        output = memory.get(clk, address);
+        memory.get(clk, address);
 
         clk = !clk;
 
@@ -1804,7 +1804,7 @@ mod tests {
         address = word_to_bit15(u16_to_word(0b101_0000_0100_1111));
 
         memory.update(clk, input, load, address, key_code);
-        output = memory.get(clk, address);
+        memory.get(clk, address);
 
         clk = !clk;
 
@@ -1926,12 +1926,12 @@ mod tests {
         key_code = u16_to_word(0b0000_0000_0101_1001);   // Y
 
         memory.update(clk, input, load, address, key_code);
-        output = memory.get(clk, address);
+        memory.get(clk, address);
 
         clk = !clk;
 
         memory.update(clk, input, load, address, key_code);
-        output = memory.get(clk, address);
+        memory.get(clk, address);
 
         clk = !clk;
 
