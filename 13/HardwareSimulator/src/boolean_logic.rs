@@ -170,545 +170,355 @@ mod tests {
     use super::*;
 
     #[rstest]
-    #[case((false, false), true)]
-    #[case((false, true),  true)]
-    #[case((true,  false), true)]
-    #[case((true,  true),  false)]
-    fn test_nand(#[case] input: (bit, bit), #[case] output: bit) {
+    #[case((0, 0), 1)]
+    #[case((0, 1), 1)]
+    #[case((1, 0), 1)]
+    #[case((1, 1), 0)]
+    fn test_nand(#[case] input: (u8, u8), #[case] output: u8) {
         let (a, b) = input;
+        let (a, b) = (u8_to_1bit(a), u8_to_1bit(b));
+        let output = u8_to_1bit(output);
         assert_eq!(output, nand(a, b));
     }
 
     #[rstest]
-    #[case(false, true)]
-    #[case(true,  false)]
-    fn test_not(#[case] input: bit, #[case] output: bit) {
+    #[case(0, 1)]
+    #[case(1, 0)]
+    fn test_not(#[case] input: u8, #[case] output: u8) {
+        let input = u8_to_1bit(input);
+        let output = u8_to_1bit(output);
         assert_eq!(output, not(input));
     }
 
     #[rstest]
-    #[case((false, false), false)]
-    #[case((false, true),  false)]
-    #[case((true,  false), false)]
-    #[case((true,  true),  true)]
-    fn test_and(#[case] input: (bit, bit), #[case] output: bit) {
+    #[case((0, 0), 0)]
+    #[case((0, 1), 0)]
+    #[case((1, 0), 0)]
+    #[case((1, 1), 1)]
+    fn test_and(#[case] input: (u8, u8), #[case] output: u8) {
         let (a, b) = input;
+        let (a, b) = (u8_to_1bit(a), u8_to_1bit(b));
+        let output = u8_to_1bit(output);
         assert_eq!(output, and(a, b));
     }
 
     #[rstest]
-    #[case((false, false), false)]
-    #[case((false, true),  true)]
-    #[case((true,  false), true)]
-    #[case((true,  true),  true)]
-    fn test_or(#[case] input: (bit, bit), #[case] output: bit) {
+    #[case((0, 0), 0)]
+    #[case((0, 1), 1)]
+    #[case((1, 0), 1)]
+    #[case((1, 1), 1)]
+    fn test_or(#[case] input: (u8, u8), #[case] output: u8) {
         let (a, b) = input;
+        let (a, b) = (u8_to_1bit(a), u8_to_1bit(b));
+        let output = u8_to_1bit(output);
         assert_eq!(output, or(a, b));
     }
 
     #[rstest]
-    #[case((false, false), false)]
-    #[case((false, true),  true)]
-    #[case((true,  false), true)]
-    #[case((true,  true),  false)]
-    fn test_xor(#[case] input: (bit, bit), #[case] output: bit) {
+    #[case((0, 0), 0)]
+    #[case((0, 1), 1)]
+    #[case((1, 0), 1)]
+    #[case((1, 1), 0)]
+    fn test_xor(#[case] input: (u8, u8), #[case] output: u8) {
         let (a, b) = input;
+        let (a, b) = (u8_to_1bit(a), u8_to_1bit(b));
+        let output = u8_to_1bit(output);
         assert_eq!(output, xor(a, b));
     }
 
     #[rstest]
-    #[case((false, false, false), false)]
-    #[case((false, true, false), false)]
-    #[case((true, false, false), true)]
-    #[case((true, true, false), true)]
-    #[case((false, false, true), false)]
-    #[case((false, true, true), true)]
-    #[case((true, false, true), false)]
-    #[case((true, true, true), true)]
-    fn test_mux(#[case] input: (bit, bit, bit), #[case] output: bit) {
+    #[case((0, 0, 0), 0)]
+    #[case((0, 1, 0), 0)]
+    #[case((1, 0, 0), 1)]
+    #[case((1, 1, 0), 1)]
+    #[case((0, 0, 1), 0)]
+    #[case((0, 1, 1), 1)]
+    #[case((1, 0, 1), 0)]
+    #[case((1, 1, 1), 1)]
+    fn test_mux(#[case] input: (u8, u8, u8), #[case] output: u8) {
         let (a, b, sel) = input;
+        let (a, b, sel) = (u8_to_1bit(a), u8_to_1bit(b), u8_to_1bit(sel));
+        let output = u8_to_1bit(output);
         assert_eq!(output, mux(a, b, sel));
     }
 
     #[rstest]
-    #[case((false, false), (false, false))]
-    #[case((true,  false), (true, false))]
-    #[case((false, true),  (false, false))]
-    #[case((true,  true),  (false, true))]
-    fn test_dmux(#[case] input: (bit, bit), #[case] output: (bit, bit)) {
+    #[case((0, 0), (0, 0))]
+    #[case((1, 0), (1, 0))]
+    #[case((0, 1), (0, 0))]
+    #[case((1, 1), (0, 1))]
+    fn test_dmux(#[case] input: (u8, u8), #[case] output: (u8, u8)) {
         let (x, sel) = input;
+        let (x, sel) = (u8_to_1bit(x), u8_to_1bit(sel));
+        let output = (u8_to_1bit(output.0), u8_to_1bit(output.1));
         assert_eq!(output, dmux(x, sel));
     }
 
     #[rstest]
-    #[case(u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b1111_1111_1111_1111))]
-    #[case(u16_to_word(0b1111_1111_1111_1111), u16_to_word(0b0000_0000_0000_0000))]
-    #[case(u16_to_word(0b1010_1010_1010_1010), u16_to_word(0b0101_0101_0101_0101))]
-    #[case(u16_to_word(0b0011_1100_1100_0011), u16_to_word(0b1100_0011_0011_1100))]
-    #[case(u16_to_word(0b0001_0010_0011_0100), u16_to_word(0b1110_1101_1100_1011))]
-    fn test_not16(#[case] input: word, #[case] output: word) {
+    #[case(0b0000_0000_0000_0000, 0b1111_1111_1111_1111)]
+    #[case(0b1111_1111_1111_1111, 0b0000_0000_0000_0000)]
+    #[case(0b1010_1010_1010_1010, 0b0101_0101_0101_0101)]
+    #[case(0b0011_1100_1100_0011, 0b1100_0011_0011_1100)]
+    #[case(0b0001_0010_0011_0100, 0b1110_1101_1100_1011)]
+    fn test_not16(#[case] input: u16, #[case] output: u16) {
+        let input = u16_to_word(input);
+        let output = u16_to_word(output);
         assert_eq!(output, not16(input));
     }
 
     #[rstest]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b0000_0000_0000_0000)),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b1111_1111_1111_1111)),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b1111_1111_1111_1111), u16_to_word(0b1111_1111_1111_1111)),
-        u16_to_word(0b1111_1111_1111_1111)
-    )]
-    #[case(
-        (u16_to_word(0b1010_1010_1010_1010), u16_to_word(0b0101_0101_0101_0101)),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0011_1100_1100_0011), u16_to_word(0b0000_1111_1111_0000)),
-        u16_to_word(0b0000_1100_1100_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0001_0010_0011_0100), u16_to_word(0b1001_1000_0111_0110)),
-        u16_to_word(0b0001_0000_0011_0100)
-    )]
-    fn test_and16(#[case] input: (word, word), #[case] output: word) {
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b1111_1111_1111_1111), 0b0000_0000_0000_0000)]
+    #[case((0b1111_1111_1111_1111, 0b1111_1111_1111_1111), 0b1111_1111_1111_1111)]
+    #[case((0b1010_1010_1010_1010, 0b0101_0101_0101_0101), 0b0000_0000_0000_0000)]
+    #[case((0b0011_1100_1100_0011, 0b0000_1111_1111_0000), 0b0000_1100_1100_0000)]
+    #[case((0b0001_0010_0011_0100, 0b1001_1000_0111_0110), 0b0001_0000_0011_0100)]
+    fn test_and16(#[case] input: (u16, u16), #[case] output: u16) {
         let (a, b) = input;
+        let (a, b) = (u16_to_word(a), u16_to_word(b));
+        let output = u16_to_word(output);
         assert_eq!(output, and16(a, b));
     }
 
     #[rstest]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b0000_0000_0000_0000)),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b1111_1111_1111_1111)),
-        u16_to_word(0b1111_1111_1111_1111)
-    )]
-    #[case(
-        (u16_to_word(0b1111_1111_1111_1111), u16_to_word(0b1111_1111_1111_1111)),
-        u16_to_word(0b1111_1111_1111_1111)
-    )]
-    #[case(
-        (u16_to_word(0b1010_1010_1010_1010), u16_to_word(0b0101_0101_0101_0101)),
-        u16_to_word(0b1111_1111_1111_1111)
-    )]
-    #[case(
-        (u16_to_word(0b0011_1100_1100_0011), u16_to_word(0b0000_1111_1111_0000)),
-        u16_to_word(0b0011_1111_1111_0011)
-    )]
-    #[case(
-        (u16_to_word(0b0001_0010_0011_0100), u16_to_word(0b1001_1000_0111_0110)),
-        u16_to_word(0b1001_1010_0111_0110)
-    )]
-    fn test_or16(#[case] input: (word, word), #[case] output: word) {
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b1111_1111_1111_1111), 0b1111_1111_1111_1111)]
+    #[case((0b1111_1111_1111_1111, 0b1111_1111_1111_1111), 0b1111_1111_1111_1111)]
+    #[case((0b1010_1010_1010_1010, 0b0101_0101_0101_0101), 0b1111_1111_1111_1111)]
+    #[case((0b0011_1100_1100_0011, 0b0000_1111_1111_0000), 0b0011_1111_1111_0011)]
+    #[case((0b0001_0010_0011_0100, 0b1001_1000_0111_0110), 0b1001_1010_0111_0110)]
+    fn test_or16(#[case] input: (u16, u16), #[case] output: u16) {
         let (a, b) = input;
+        let (a, b) = (u16_to_word(a), u16_to_word(b));
+        let output = u16_to_word(output);
         assert_eq!(output, or16(a, b));
     }
 
     #[rstest]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b0000_0000_0000_0000), false),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b0000_0000_0000_0000), true),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b0001_0010_0011_0100), false),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b0000_0000_0000_0000), u16_to_word(0b0001_0010_0011_0100), true),
-        u16_to_word(0b0001_0010_0011_0100)
-    )]
-    #[case(
-        (u16_to_word(0b1001_1000_0111_0110), u16_to_word(0b0000_0000_0000_0000), false),
-        u16_to_word(0b1001_1000_0111_0110)
-    )]
-    #[case(
-        (u16_to_word(0b1001_1000_0111_0110), u16_to_word(0b0000_0000_0000_0000), true),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (u16_to_word(0b1010_1010_1010_1010), u16_to_word(0b0101_0101_0101_0101), false),
-        u16_to_word(0b1010_1010_1010_1010)
-    )]
-    #[case(
-        (u16_to_word(0b1010_1010_1010_1010), u16_to_word(0b0101_0101_0101_0101), true),
-        u16_to_word(0b0101_0101_0101_0101)
-    )]
-    fn test_mux16(#[case] input: (word, word, bit), #[case] output: word) {
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 1), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b0001_0010_0011_0100, 0), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b0001_0010_0011_0100, 1), 0b0001_0010_0011_0100)]
+    #[case((0b1001_1000_0111_0110, 0b0000_0000_0000_0000, 0), 0b1001_1000_0111_0110)]
+    #[case((0b1001_1000_0111_0110, 0b0000_0000_0000_0000, 1), 0b0000_0000_0000_0000)]
+    #[case((0b1010_1010_1010_1010, 0b0101_0101_0101_0101, 0), 0b1010_1010_1010_1010)]
+    #[case((0b1010_1010_1010_1010, 0b0101_0101_0101_0101, 1), 0b0101_0101_0101_0101)]
+    fn test_mux16(#[case] input: (u16, u16, u8), #[case] output: u16) {
         let (a, b, sel) = input;
+        let (a, b, sel) = (u16_to_word(a), u16_to_word(b), u8_to_1bit(sel));
+        let output = u16_to_word(output);
         assert_eq!(output, mux16(a, b, sel));
     }
 
     #[rstest]
-    #[case(u8_to_bits(0b0000_0000), false)]
-    #[case(u8_to_bits(0b1111_1111), true)]
-    #[case(u8_to_bits(0b0001_0000), true)]
-    #[case(u8_to_bits(0b0000_0001), true)]
-    #[case(u8_to_bits(0b0010_0110), true)]
-    fn test_or8way(#[case] input: [bit; 8], #[case] output: bit) {
+    #[case(0b0000_0000, 0)]
+    #[case(0b1111_1111, 1)]
+    #[case(0b0001_0000, 1)]
+    #[case(0b0000_0001, 1)]
+    #[case(0b0010_0110, 1)]
+    fn test_or8way(#[case] input: u8, #[case] output: u8) {
+        let input = u8_to_bits(input);
+        let output = u8_to_1bit(output);
         assert_eq!(output, or8way(input));
     }
 
     #[rstest]
-    #[case(
-        (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [false, false]
-        ),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [true, false]
-        ),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [false, true]
-        ),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [true, true]
-        ),
-        u16_to_word(0b0000_0000_0000_0000)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b1001_1000_0111_0110), 
-            u16_to_word(0b1010_1010_1010_1010), 
-            u16_to_word(0b0101_0101_0101_0101), 
-            [false, false]
-        ),
-        u16_to_word(0b0001_0010_0011_0100)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b1001_1000_0111_0110), 
-            u16_to_word(0b1010_1010_1010_1010), 
-            u16_to_word(0b0101_0101_0101_0101), 
-            [true, false]
-        ),
-        u16_to_word(0b1001_1000_0111_0110)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b1001_1000_0111_0110), 
-            u16_to_word(0b1010_1010_1010_1010), 
-            u16_to_word(0b0101_0101_0101_0101), 
-            [false, true]
-        ),
-        u16_to_word(0b1010_1010_1010_1010)
-    )]
-    #[case(
-        (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b1001_1000_0111_0110), 
-            u16_to_word(0b1010_1010_1010_1010), 
-            u16_to_word(0b0101_0101_0101_0101), 
-            [true, true]
-        ),
-        u16_to_word(0b0101_0101_0101_0101)
-    )]
-    fn test_mux4way16(#[case] input: (word, word, word, word, [bit; 2]), #[case] output: word) {
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, [0, 0]), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, [1, 0]), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, [0, 1]), 0b0000_0000_0000_0000)]
+    #[case((0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, [1, 1]), 0b0000_0000_0000_0000)]
+    #[case((0b0001_0010_0011_0100, 0b1001_1000_0111_0110, 0b1010_1010_1010_1010, 0b0101_0101_0101_0101, [0, 0]), 0b0001_0010_0011_0100)]
+    #[case((0b0001_0010_0011_0100, 0b1001_1000_0111_0110, 0b1010_1010_1010_1010, 0b0101_0101_0101_0101, [1, 0]), 0b1001_1000_0111_0110)]
+    #[case((0b0001_0010_0011_0100, 0b1001_1000_0111_0110, 0b1010_1010_1010_1010, 0b0101_0101_0101_0101, [0, 1]), 0b1010_1010_1010_1010)]
+    #[case((0b0001_0010_0011_0100, 0b1001_1000_0111_0110, 0b1010_1010_1010_1010, 0b0101_0101_0101_0101, [1, 1]), 0b0101_0101_0101_0101)]
+    fn test_mux4way16(#[case] input: (u16, u16, u16, u16, [u8; 2]), #[case] output: u16) {
         let (a, b, c, d, sel) = input;
+        let (a, b, c, d, sel) = (u16_to_word(a), u16_to_word(b), u16_to_word(c), u16_to_word(d), sel.map(u8_to_1bit));
+        let output = u16_to_word(output);
         assert_eq!(output, mux4way16(a, b, c, d, sel));
     }
 
     #[rstest]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [false, false, false]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [0, 0, 0]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [true, false, false]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [1, 0, 0]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [false, true, false]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [0, 1, 0]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [true, true, false]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [1, 1, 0]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [false, false, true]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [0, 0, 1]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [true, false, true]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [1, 0, 1]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [false, true, true]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [0, 1, 1]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            u16_to_word(0b0000_0000_0000_0000), 
-            [true, true, true]
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 0b0000_0000_0000_0000, 
+            [1, 1, 1]
         ),
-        u16_to_word(0b0000_0000_0000_0000)
+        0b0000_0000_0000_0000
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [false, false, false]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [0, 0, 0]
         ),
-        u16_to_word(0b0001_0010_0011_0100)
+        0b0001_0010_0011_0100
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [true, false, false]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [1, 0, 0]
         ),
-        u16_to_word(0b0010_0011_0100_0101)
+        0b0010_0011_0100_0101
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [false, true, false]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [0, 1, 0]
         ),
-        u16_to_word(0b0011_0100_0101_0110)
+        0b0011_0100_0101_0110
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [true, true, false]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [1, 1, 0]
         ),
-        u16_to_word(0b0100_0101_0110_0111)
+        0b0100_0101_0110_0111
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [false, false, true]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [0, 0, 1]
         ),
-        u16_to_word(0b0101_0110_0111_1000)
+        0b0101_0110_0111_1000
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [true, false, true]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [1, 0, 1]
         ),
-        u16_to_word(0b0110_0111_1000_1001)
+        0b0110_0111_1000_1001
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [false, true, true]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111,
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [0, 1, 1]
         ),
-        u16_to_word(0b0111_1000_1001_1010)
+        0b0111_1000_1001_1010
     )]
     #[case(
         (
-            u16_to_word(0b0001_0010_0011_0100), 
-            u16_to_word(0b0010_0011_0100_0101), 
-            u16_to_word(0b0011_0100_0101_0110), 
-            u16_to_word(0b0100_0101_0110_0111), 
-            u16_to_word(0b0101_0110_0111_1000), 
-            u16_to_word(0b0110_0111_1000_1001), 
-            u16_to_word(0b0111_1000_1001_1010), 
-            u16_to_word(0b1000_1001_1010_1011), 
-            [true, true, true]
+            0b0001_0010_0011_0100, 0b0010_0011_0100_0101, 0b0011_0100_0101_0110, 0b0100_0101_0110_0111, 
+            0b0101_0110_0111_1000, 0b0110_0111_1000_1001, 0b0111_1000_1001_1010, 0b1000_1001_1010_1011, 
+            [1, 1, 1]
         ),
-        u16_to_word(0b1000_1001_1010_1011)
+        0b1000_1001_1010_1011
     )]
-    fn test_mux8way16(#[case] input: (word, word, word, word, word, word, word, word, [bit; 3]), #[case] output: word) {
+    fn test_mux8way16(#[case] input: (u16, u16, u16, u16, u16, u16, u16, u16, [u8; 3]), #[case] output: u16) {
         let (a, b, c, d, e, f, g, h, sel) = input;
+        let (a, b, c, d, e, f, g, h, sel) = (
+            u16_to_word(a), u16_to_word(b), u16_to_word(c), u16_to_word(d), 
+            u16_to_word(e), u16_to_word(f), u16_to_word(g), u16_to_word(h), 
+            sel.map(u8_to_1bit));
+        let output = u16_to_word(output);
         assert_eq!(output, mux8way16(a, b, c, d, e, f, g, h, sel));
     }
 
     #[rstest]
-    #[case((false, [false, false]), (false, false, false, false))]
-    #[case((false, [true,  false]), (false, false, false, false))]
-    #[case((false, [false, true]),  (false, false, false, false))]
-    #[case((false, [true,  true]),  (false, false, false, false))]
-    #[case((true,  [false, false]), (true,  false, false, false))]
-    #[case((true,  [true,  false]), (false, true,  false, false))]
-    #[case((true,  [false, true]),  (false, false, true,  false))]
-    #[case((true,  [true,  true]),  (false, false, false, true))]
-    fn test_dmux4way(#[case] input: (bit, [bit; 2]), #[case] output: (bit, bit, bit, bit)) {
+    #[case((0, [0, 0]), (0, 0, 0, 0))]
+    #[case((0, [1, 0]), (0, 0, 0, 0))]
+    #[case((0, [0, 1]), (0, 0, 0, 0))]
+    #[case((0, [1, 1]), (0, 0, 0, 0))]
+    #[case((1, [0, 0]), (1, 0, 0, 0))]
+    #[case((1, [1, 0]), (0, 1, 0, 0))]
+    #[case((1, [0, 1]), (0, 0, 1, 0))]
+    #[case((1, [1, 1]), (0, 0, 0, 1))]
+    fn test_dmux4way(#[case] input: (u8, [u8; 2]), #[case] output: (u8, u8, u8, u8)) {
         let (x, sel) = input;
+        let (x, sel) = (u8_to_1bit(x), sel.map(u8_to_1bit));
         let (a, b, c, d) = output;
+        let (a, b, c, d) = (u8_to_1bit(a), u8_to_1bit(b), u8_to_1bit(c), u8_to_1bit(d));
         assert_eq!((a, b, c, d), dmux4way(x, sel));
     }
 
     #[rstest]
-    #[case((false, [false, false, false]), (false, false, false, false, false, false, false, false))]
-    #[case((false, [true,  false, false]), (false, false, false, false, false, false, false, false))]
-    #[case((false, [false, true,  false]), (false, false, false, false, false, false, false, false))]
-    #[case((false, [true,  true,  false]), (false, false, false, false, false, false, false, false))]
-    #[case((false, [false, false, true]),  (false, false, false, false, false, false, false, false))]
-    #[case((false, [true,  false, true]),  (false, false, false, false, false, false, false, false))]
-    #[case((false, [false, true,  true]),  (false, false, false, false, false, false, false, false))]
-    #[case((false, [true,  true,  true]),  (false, false, false, false, false, false, false, false))]
-    #[case((true,  [false, false, false]), (true,  false, false, false, false, false, false, false))]
-    #[case((true,  [true,  false, false]), (false, true,  false, false, false, false, false, false))]
-    #[case((true,  [false, true,  false]), (false, false, true,  false, false, false, false, false))]
-    #[case((true,  [true,  true,  false]), (false, false, false, true,  false, false, false, false))]
-    #[case((true,  [false, false, true]),  (false, false, false, false, true,  false, false, false))]
-    #[case((true,  [true,  false, true]),  (false, false, false, false, false, true,  false, false))]
-    #[case((true,  [false, true,  true]),  (false, false, false, false, false, false, true,  false))]
-    #[case((true,  [true,  true,  true]),  (false, false, false, false, false, false, false, true))]
-    fn test_dmux8way(#[case] input: (bit, [bit; 3]), #[case] output: (bit, bit, bit, bit, bit, bit, bit, bit)) {
+    #[case((0, [0, 0, 0]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [1, 0, 0]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [0, 1, 0]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [1, 1, 0]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [0, 0, 1]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [1, 0, 1]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [0, 1, 1]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((0, [1, 1, 1]), (0, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((1, [0, 0, 0]), (1, 0, 0, 0, 0, 0, 0, 0))]
+    #[case((1, [1, 0, 0]), (0, 1, 0, 0, 0, 0, 0, 0))]
+    #[case((1, [0, 1, 0]), (0, 0, 1, 0, 0, 0, 0, 0))]
+    #[case((1, [1, 1, 0]), (0, 0, 0, 1, 0, 0, 0, 0))]
+    #[case((1, [0, 0, 1]), (0, 0, 0, 0, 1, 0, 0, 0))]
+    #[case((1, [1, 0, 1]), (0, 0, 0, 0, 0, 1, 0, 0))]
+    #[case((1, [0, 1, 1]), (0, 0, 0, 0, 0, 0, 1, 0))]
+    #[case((1, [1, 1, 1]), (0, 0, 0, 0, 0, 0, 0, 1))]
+    fn test_dmux8way(#[case] input: (u8, [u8; 3]), #[case] output: (u8, u8, u8, u8, u8, u8, u8, u8)) {
         let (x, sel) = input;
+        let (x, sel) = (u8_to_1bit(x), sel.map(u8_to_1bit));
         let (a, b, c, d, e, f, g, h) = output;
+        let (a, b, c, d, e, f, g, h) = (
+            u8_to_1bit(a), u8_to_1bit(b), u8_to_1bit(c), u8_to_1bit(d), 
+            u8_to_1bit(e), u8_to_1bit(f), u8_to_1bit(g), u8_to_1bit(h)
+        );
         assert_eq!((a, b, c, d, e, f, g, h), dmux8way(x, sel));
     }
 }
