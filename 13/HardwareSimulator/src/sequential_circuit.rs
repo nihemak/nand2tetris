@@ -233,6 +233,26 @@ impl RAM4K {
 }
 
 #[derive(Debug, Copy, Clone)]
+pub struct RAM4KBuiltIn {
+    ram: [word; 4096]
+}
+
+impl RAM4KBuiltIn {
+    pub fn new() -> Self {
+        RAM4KBuiltIn { ram: [u16_to_word(0b0000_0000_0000_0000); 4096] }
+    }
+
+    pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 12]) {
+        self.ram[bit12_to_u16(address) as usize] = input;
+    }
+
+    pub fn get(&self, clk: bit, address: [bit; 12]) -> word {
+        self.ram[bit12_to_u16(address) as usize]
+    }
+}
+
+
+#[derive(Debug, Copy, Clone)]
 pub struct RAM16K {
     rams: [RAM4K; 4]
 }
@@ -276,6 +296,29 @@ impl RAM16K {
 }
 
 #[derive(Debug, Copy, Clone)]
+pub struct RAM16KBuiltIn {
+    ram: [word; 16384 /* 14bit */],
+}
+
+impl RAM16KBuiltIn {
+    pub fn new() -> Self {
+        RAM16KBuiltIn {
+            ram: [u16_to_word(0b0000_0000_0000_0000); 16384],
+        }
+    }
+
+    pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 14]) {
+        if clk && load {
+            self.ram[bit14_to_u16(address) as usize] = input;
+        }
+    }
+
+    pub fn get(&self, clk: bit, address: [bit; 14]) -> word {
+        self.ram[bit14_to_u16(address) as usize]
+    }
+}
+
+#[derive(Debug, Copy, Clone)]
 pub struct PC {
     counter: Register
 }
@@ -291,6 +334,35 @@ impl PC {
         let incout = inc16(out0);
         let out1 = mux16(out0, incout, inc);
         let out2 = mux4way16(
+            out1,
+            input,
+            u16_to_word(0b0000_0000_0000_0000),
+            u16_to_word(0b0000_0000_0000_0000),
+            [load, reset]
+        );
+        self.counter.update(clk, out2, true);
+    }
+
+    pub fn get(&self, clk: bit) -> word {
+        self.counter.get(clk)
+    }
+}
+
+#[derive(Debug, Copy, Clone)]
+pub struct PCBuiltIn {
+    counter: Register
+}
+
+impl PCBuiltIn {
+    pub fn new() -> Self {
+        PCBuiltIn { counter: Register::new() }
+    }
+
+    pub fn update(&mut self, clk: bit, input: word, load: bit, inc: bit, reset: bit) {
+        let out0 = self.get(!clk);
+        let incout = inc16_built_in(out0);
+        let out1 = mux16_built_in(out0, incout, inc);
+        let out2 = mux4way16_built_in(
             out1,
             input,
             u16_to_word(0b0000_0000_0000_0000),

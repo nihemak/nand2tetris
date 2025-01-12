@@ -60,10 +60,32 @@ pub fn bit15_to_u16(word: [bit; 15]) -> u16 {
     n
 }
 
+pub fn bit14_to_u16(word: [bit; 14]) -> u16 {
+    let mut n: u16 = 0b0000000000000000;
+    let base: u32 = 2;
+    for i in 0..14 {
+        if word[i] {
+            n += base.pow(i as u32) as u16;
+        }
+    }
+    n
+}
+
 pub fn bit13_to_u16(word: [bit; 13]) -> u16 {
     let mut n: u16 = 0b0000000000000000;
     let base: u32 = 2;
     for i in 0..13 {
+        if word[i] {
+            n += base.pow(i as u32) as u16;
+        }
+    }
+    n
+}
+
+pub fn bit12_to_u16(word: [bit; 12]) -> u16 {
+    let mut n: u16 = 0b0000000000000000;
+    let base: u32 = 2;
+    for i in 0..12 {
         if word[i] {
             n += base.pow(i as u32) as u16;
         }
