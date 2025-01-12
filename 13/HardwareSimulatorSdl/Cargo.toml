@@ -1,0 +1,8 @@
+[package]
+name = "HardwareSimulatorSdl"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sdl2 = "0.32.0"
+HardwareSimulator = { path = "../HardwareSimulator" }

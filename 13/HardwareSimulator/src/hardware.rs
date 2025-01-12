@@ -273,7 +273,8 @@ impl Computer {
         self.in_m = self.memory.get(clk, address_m);
     }
 
-    pub fn step(&mut self, reset: bit, word: word) {
+    pub fn step(&mut self, reset: bit, word: u16) {
+        let word = u16_to_word(word);
         let mut clk = true;
         self.update(clk, reset, word);
         clk = !clk;
