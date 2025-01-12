@@ -570,7 +570,7 @@ mod tests {
         let mut reset = false;
 
         cpu.update(clk, in_m, instruction, reset);
-        let (mut out_m, mut write_m, mut pc, mut address_m) = cpu.get(clk);
+        let (_, mut write_m, mut pc, mut address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_0000)), address_m);
         assert_eq!(u16_to_word(0b0000_0000_0000_0000), pc);
@@ -579,7 +579,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0011_0000_0011_1001)), address_m);    // 12345
         assert_eq!(u16_to_word(0b0000_0000_0000_0001), pc);
@@ -589,7 +589,7 @@ mod tests {
         instruction = u16_to_word(0b1110_1100_0001_0000); // D=A
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0011_0000_0011_1001)), address_m);    // 12345
         assert_eq!(u16_to_word(0b0000_0000_0000_0001), pc);
@@ -597,7 +597,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0011_0000_0011_1001)), address_m);    // 12345
         assert_eq!(u16_to_word(0b0000_0000_0000_0010), pc); // 2
@@ -606,7 +606,7 @@ mod tests {
         instruction = u16_to_word(0b0101_1011_1010_0000); // @23456
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0011_0000_0011_1001)), address_m);    // 12345
         assert_eq!(u16_to_word(0b0000_0000_0000_0010), pc); // 2
@@ -614,7 +614,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0101_1011_1010_0000)), address_m);    // 23456
         assert_eq!(u16_to_word(0b0000_0000_0000_0011), pc); // 3
@@ -623,7 +623,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0001_1101_0000); // D=A-D
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0101_1011_1010_0000)), address_m);    // 23456
         assert_eq!(u16_to_word(0b0000_0000_0000_0011), pc); // 3
@@ -631,7 +631,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0101_1011_1010_0000)), address_m);    // 23456
         assert_eq!(u16_to_word(0b0000_0000_0000_0100), pc); // 4
@@ -640,7 +640,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0011_1110_1000); // @1000
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0101_1011_1010_0000)), address_m);    // 23456
         assert_eq!(u16_to_word(0b0000_0000_0000_0100), pc); // 4
@@ -648,7 +648,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_0101), pc); // 5
@@ -657,7 +657,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_1000); // M=D
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        let (mut out_m, mut write_m, mut pc, mut address_m) = cpu.get(clk);
         assert_eq!(u16_to_word(0b0010_1011_0110_0111), out_m); // 11111
         assert_eq!(true, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
@@ -676,7 +676,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0011_1110_1001); // @1001
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_0110), pc); // 6
@@ -684,7 +684,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1001)), address_m);    // 1001
         assert_eq!(u16_to_word(0b0000_0000_0000_0111), pc); // 7
@@ -712,7 +712,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0011_1110_1000); // @1000
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1001)), address_m);    // 1001
         assert_eq!(u16_to_word(0b0000_0000_0000_1000), pc); // 8
@@ -720,7 +720,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_1001), pc); // 9
@@ -730,7 +730,7 @@ mod tests {
         instruction = u16_to_word(0b1111_0100_1101_0000); // D=D-M
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_1001), pc); // 9
@@ -738,7 +738,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_1010), pc); // 10
@@ -747,7 +747,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0000_0000_1110); // @14
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_1010), pc); // 10
@@ -755,7 +755,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_1110)), address_m);    // 14
         assert_eq!(u16_to_word(0b0000_0000_0000_1011), pc); // 11
@@ -764,7 +764,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0100); // D;jlt
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_1110)), address_m);    // 14
         assert_eq!(u16_to_word(0b0000_0000_0000_1011), pc); // 11
@@ -772,7 +772,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_1110)), address_m);    // 14
         assert_eq!(u16_to_word(0b0000_0000_0000_1110), pc); // 14
@@ -781,7 +781,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0011_1110_0111); // @999
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_1110)), address_m);    // 14
         assert_eq!(u16_to_word(0b0000_0000_0000_1110), pc); // 14
@@ -789,7 +789,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_0111)), address_m);    // 999
         assert_eq!(u16_to_word(0b0000_0000_0000_1111), pc); // 15
@@ -798,7 +798,7 @@ mod tests {
         instruction = u16_to_word(0b1110_1101_1110_0000); // A=A+1
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_0111)), address_m);    // 999
         assert_eq!(u16_to_word(0b0000_0000_0000_1111), pc); // 15
@@ -806,7 +806,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_0000), pc); // 16
@@ -834,7 +834,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0000_0001_0101); // @21
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_0001), pc); // 17
@@ -842,7 +842,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0001_0101)), address_m);    // 21
         assert_eq!(u16_to_word(0b0000_0000_0001_0010), pc); // 18
@@ -851,7 +851,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0111_1100_0010); // D+1;jeq
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0001_0101)), address_m);    // 21
         assert_eq!(u16_to_word(0b0000_0000_0001_0010), pc); // 18
@@ -859,7 +859,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0001_0101)), address_m);    // 21
         assert_eq!(u16_to_word(0b0000_0000_0001_0101), pc); // 21
@@ -868,7 +868,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0000_0000_0010); // @2
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0001_0101)), address_m);    // 21
         assert_eq!(u16_to_word(0b0000_0000_0001_0101), pc); // 21
@@ -876,7 +876,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_0010)), address_m);    // 2
         assert_eq!(u16_to_word(0b0000_0000_0001_0110), pc); // 22
@@ -885,7 +885,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0000_1001_0000); // D=D+A
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_0010)), address_m);    // 2
         assert_eq!(u16_to_word(0b0000_0000_0001_0110), pc); // 22
@@ -893,7 +893,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_0010)), address_m);    // 2
         assert_eq!(u16_to_word(0b0000_0000_0001_0111), pc); // 23
@@ -902,7 +902,7 @@ mod tests {
         instruction = u16_to_word(0b0000_0011_1110_1000); // @1000
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0000_0000_0010)), address_m);    // 2
         assert_eq!(u16_to_word(0b0000_0000_0001_0111), pc); // 23
@@ -910,7 +910,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1000), pc); // 24
@@ -919,7 +919,7 @@ mod tests {
         instruction = u16_to_word(0b1110_1110_1001_0000); // D=-1
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1000), pc); // 24
@@ -927,7 +927,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1001), pc); // 25
@@ -936,7 +936,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0001); // D;JGT
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1001), pc); // 25
@@ -944,7 +944,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1010), pc); // 26
@@ -953,7 +953,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0010); // D;JEQ
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1010), pc); // 26
@@ -961,7 +961,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1011), pc); // 27
@@ -970,7 +970,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0011); // D;JGE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1011), pc); // 27
@@ -978,7 +978,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1100), pc); // 28
@@ -987,7 +987,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0100); // D;JLT
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0001_1100), pc); // 28
@@ -995,7 +995,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1004,7 +1004,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0101); // D;JNE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1012,7 +1012,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1021,7 +1021,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0110); // D;JLE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1029,7 +1029,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1038,7 +1038,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0111); // D;JMP
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1046,7 +1046,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1055,7 +1055,7 @@ mod tests {
         instruction = u16_to_word(0b1110_1010_1001_0000); // D=0
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1063,7 +1063,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1072,7 +1072,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0001); // D;JGT
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1080,7 +1080,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1010), pc); // 1002
@@ -1089,7 +1089,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0010); // D;JEQ
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1010), pc); // 1002
@@ -1097,7 +1097,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1106,7 +1106,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0011); // D;JGE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1114,7 +1114,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1123,7 +1123,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0100); // D;JLT
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1131,7 +1131,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1140,7 +1140,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0101); // D;JNE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1148,7 +1148,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1010), pc); // 1002
@@ -1157,7 +1157,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0110); // D;JLE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1010), pc); // 1002
@@ -1165,7 +1165,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1174,7 +1174,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0111); // D;JMP
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1182,7 +1182,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1191,7 +1191,7 @@ mod tests {
         instruction = u16_to_word(0b1110_1111_1101_0000); // D=1
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1199,7 +1199,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1208,7 +1208,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0001); // D;JGT
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1216,7 +1216,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1225,7 +1225,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0010); // D;JEQ
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1233,7 +1233,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1242,7 +1242,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0011); // D;JGE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1250,7 +1250,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1259,7 +1259,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0100); // D;JLT
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1267,7 +1267,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1276,7 +1276,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0101); // D;JNE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1284,7 +1284,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1293,7 +1293,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0110); // D;JLE
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1301,7 +1301,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1310,7 +1310,7 @@ mod tests {
         instruction = u16_to_word(0b1110_0011_0000_0111); // D;JMP
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1001), pc); // 1001
@@ -1318,7 +1318,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1327,7 +1327,7 @@ mod tests {
         reset = true;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0011_1110_1000), pc); // 1000
@@ -1335,7 +1335,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_0000), pc); // 0
@@ -1345,7 +1345,7 @@ mod tests {
         reset = false;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0000_0011_1110_1000)), address_m);    // 1000
         assert_eq!(u16_to_word(0b0000_0000_0000_0000), pc); // 0
@@ -1353,7 +1353,7 @@ mod tests {
         clk = !clk;
 
         cpu.update(clk, in_m, instruction, reset);
-        (out_m, write_m, pc, address_m) = cpu.get(clk);
+        (_, write_m, pc, address_m) = cpu.get(clk);
         assert_eq!(false, write_m);
         assert_eq!(word_to_bit15(u16_to_word(0b0111_1111_1111_1111)), address_m);    // 32767
         assert_eq!(u16_to_word(0b0000_0000_0000_0001), pc); // 1
