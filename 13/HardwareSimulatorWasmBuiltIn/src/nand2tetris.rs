@@ -1,14 +1,7 @@
-mod boolean_logic;
-mod boolean_arithmetic;
-mod sequential_circuit;
-mod hardware;
-mod helper;
-
 use anyhow::Result;
 use async_trait::async_trait;
-use hardware::ComputerBuiltIn;
-use boolean_logic::*;
-use helper::*;
+use HardwareSimulator::boolean_logic::bit;
+use HardwareSimulator::hardware::ComputerBuiltIn;
 
 use crate::{
     engine::{ComputerSystem, KeyState, Renderer},
@@ -86,82 +79,80 @@ impl Nand2Tetris {
         ]
     }
 
-    fn get_keyboard_press_code(keystate: &KeyState) -> word {
-        u16_to_word(
-            if keystate.is_pressed("Digit0")     { 0b0000_0000_0011_0000 } else 
-            if keystate.is_pressed("Digit1")     { 0b0000_0000_0011_0001 } else 
-            if keystate.is_pressed("Digit2")     { 0b0000_0000_0011_0010 } else 
-            if keystate.is_pressed("Digit3")     { 0b0000_0000_0011_0011 } else 
-            if keystate.is_pressed("Digit4")     { 0b0000_0000_0011_0100 } else 
-            if keystate.is_pressed("Digit5")     { 0b0000_0000_0011_0101 } else 
-            if keystate.is_pressed("Digit6")     { 0b0000_0000_0011_0110 } else 
-            if keystate.is_pressed("Digit7")     { 0b0000_0000_0011_0111 } else 
-            if keystate.is_pressed("Digit8")     { 0b0000_0000_0011_1000 } else 
-            if keystate.is_pressed("Digit9")     { 0b0000_0000_0011_1001 } else 
-            if keystate.is_pressed("ArrowLeft")  { 0b0000_0000_1000_0010 } else 
-            if keystate.is_pressed("ArrowUp")    { 0b0000_0000_1000_0011 } else 
-            if keystate.is_pressed("ArrowRight") { 0b0000_0000_1000_0100 } else 
-            if keystate.is_pressed("ArrowDown")  { 0b0000_0000_1000_0101 } else {
-                let is_shift = keystate.is_pressed("ShiftLeft") || keystate.is_pressed("ShiftRight");
-                if is_shift {
-                    if keystate.is_pressed("KeyA") { 0b0000_0000_0100_0001 } else 
-                    if keystate.is_pressed("KeyB") { 0b0000_0000_0100_0010 } else 
-                    if keystate.is_pressed("KeyC") { 0b0000_0000_0100_0011 } else 
-                    if keystate.is_pressed("KeyD") { 0b0000_0000_0100_0100 } else 
-                    if keystate.is_pressed("KeyE") { 0b0000_0000_0100_0101 } else 
-                    if keystate.is_pressed("KeyF") { 0b0000_0000_0100_0110 } else 
-                    if keystate.is_pressed("KeyG") { 0b0000_0000_0100_0111 } else 
-                    if keystate.is_pressed("KeyH") { 0b0000_0000_0100_1000 } else 
-                    if keystate.is_pressed("KeyI") { 0b0000_0000_0100_1001 } else 
-                    if keystate.is_pressed("KeyJ") { 0b0000_0000_0100_1010 } else 
-                    if keystate.is_pressed("KeyK") { 0b0000_0000_0100_1011 } else 
-                    if keystate.is_pressed("KeyL") { 0b0000_0000_0100_1100 } else 
-                    if keystate.is_pressed("KeyM") { 0b0000_0000_0100_1101 } else 
-                    if keystate.is_pressed("KeyN") { 0b0000_0000_0100_1110 } else 
-                    if keystate.is_pressed("KeyO") { 0b0000_0000_0100_1111 } else 
-                    if keystate.is_pressed("KeyP") { 0b0000_0000_0101_0000 } else 
-                    if keystate.is_pressed("KeyQ") { 0b0000_0000_0101_0001 } else 
-                    if keystate.is_pressed("KeyR") { 0b0000_0000_0101_0010 } else 
-                    if keystate.is_pressed("KeyS") { 0b0000_0000_0101_0011 } else 
-                    if keystate.is_pressed("KeyT") { 0b0000_0000_0101_0100 } else 
-                    if keystate.is_pressed("KeyU") { 0b0000_0000_0101_0101 } else 
-                    if keystate.is_pressed("KeyV") { 0b0000_0000_0101_0110 } else 
-                    if keystate.is_pressed("KeyW") { 0b0000_0000_0101_0111 } else 
-                    if keystate.is_pressed("KeyX") { 0b0000_0000_0101_1000 } else 
-                    if keystate.is_pressed("KeyY") { 0b0000_0000_0101_1001 } else 
-                    if keystate.is_pressed("KeyZ") { 0b0000_0000_0101_1010 } else
-                    { 0b0000_0000_0000_0000 }
-                } else {
-                    if keystate.is_pressed("KeyA") { 0b0000_0000_0110_0001 } else 
-                    if keystate.is_pressed("KeyB") { 0b0000_0000_0110_0010 } else 
-                    if keystate.is_pressed("KeyC") { 0b0000_0000_0110_0011 } else 
-                    if keystate.is_pressed("KeyD") { 0b0000_0000_0110_0100 } else 
-                    if keystate.is_pressed("KeyE") { 0b0000_0000_0110_0101 } else 
-                    if keystate.is_pressed("KeyF") { 0b0000_0000_0110_0110 } else 
-                    if keystate.is_pressed("KeyG") { 0b0000_0000_0110_0111 } else 
-                    if keystate.is_pressed("KeyH") { 0b0000_0000_0110_1000 } else 
-                    if keystate.is_pressed("KeyI") { 0b0000_0000_0110_1001 } else 
-                    if keystate.is_pressed("KeyJ") { 0b0000_0000_0110_1010 } else 
-                    if keystate.is_pressed("KeyK") { 0b0000_0000_0110_1011 } else 
-                    if keystate.is_pressed("KeyL") { 0b0000_0000_0110_1100 } else 
-                    if keystate.is_pressed("KeyM") { 0b0000_0000_0110_1101 } else 
-                    if keystate.is_pressed("KeyN") { 0b0000_0000_0110_1110 } else 
-                    if keystate.is_pressed("KeyO") { 0b0000_0000_0110_1111 } else 
-                    if keystate.is_pressed("KeyP") { 0b0000_0000_0111_0000 } else 
-                    if keystate.is_pressed("KeyQ") { 0b0000_0000_0111_0001 } else 
-                    if keystate.is_pressed("KeyR") { 0b0000_0000_0111_0010 } else 
-                    if keystate.is_pressed("KeyS") { 0b0000_0000_0111_0011 } else 
-                    if keystate.is_pressed("KeyT") { 0b0000_0000_0111_0100 } else 
-                    if keystate.is_pressed("KeyU") { 0b0000_0000_0111_0101 } else 
-                    if keystate.is_pressed("KeyV") { 0b0000_0000_0111_0110 } else 
-                    if keystate.is_pressed("KeyW") { 0b0000_0000_0111_0111 } else 
-                    if keystate.is_pressed("KeyX") { 0b0000_0000_0111_1000 } else 
-                    if keystate.is_pressed("KeyY") { 0b0000_0000_0111_1001 } else 
-                    if keystate.is_pressed("KeyZ") { 0b0000_0000_0111_1010 } else 
-                    { 0b0000_0000_0000_0000 }
-                }
+    fn get_keyboard_press_code(keystate: &KeyState) -> u16 {
+        if keystate.is_pressed("Digit0")     { 0b0000_0000_0011_0000 } else 
+        if keystate.is_pressed("Digit1")     { 0b0000_0000_0011_0001 } else 
+        if keystate.is_pressed("Digit2")     { 0b0000_0000_0011_0010 } else 
+        if keystate.is_pressed("Digit3")     { 0b0000_0000_0011_0011 } else 
+        if keystate.is_pressed("Digit4")     { 0b0000_0000_0011_0100 } else 
+        if keystate.is_pressed("Digit5")     { 0b0000_0000_0011_0101 } else 
+        if keystate.is_pressed("Digit6")     { 0b0000_0000_0011_0110 } else 
+        if keystate.is_pressed("Digit7")     { 0b0000_0000_0011_0111 } else 
+        if keystate.is_pressed("Digit8")     { 0b0000_0000_0011_1000 } else 
+        if keystate.is_pressed("Digit9")     { 0b0000_0000_0011_1001 } else 
+        if keystate.is_pressed("ArrowLeft")  { 0b0000_0000_1000_0010 } else 
+        if keystate.is_pressed("ArrowUp")    { 0b0000_0000_1000_0011 } else 
+        if keystate.is_pressed("ArrowRight") { 0b0000_0000_1000_0100 } else 
+        if keystate.is_pressed("ArrowDown")  { 0b0000_0000_1000_0101 } else {
+            let is_shift = keystate.is_pressed("ShiftLeft") || keystate.is_pressed("ShiftRight");
+            if is_shift {
+                if keystate.is_pressed("KeyA") { 0b0000_0000_0100_0001 } else 
+                if keystate.is_pressed("KeyB") { 0b0000_0000_0100_0010 } else 
+                if keystate.is_pressed("KeyC") { 0b0000_0000_0100_0011 } else 
+                if keystate.is_pressed("KeyD") { 0b0000_0000_0100_0100 } else 
+                if keystate.is_pressed("KeyE") { 0b0000_0000_0100_0101 } else 
+                if keystate.is_pressed("KeyF") { 0b0000_0000_0100_0110 } else 
+                if keystate.is_pressed("KeyG") { 0b0000_0000_0100_0111 } else 
+                if keystate.is_pressed("KeyH") { 0b0000_0000_0100_1000 } else 
+                if keystate.is_pressed("KeyI") { 0b0000_0000_0100_1001 } else 
+                if keystate.is_pressed("KeyJ") { 0b0000_0000_0100_1010 } else 
+                if keystate.is_pressed("KeyK") { 0b0000_0000_0100_1011 } else 
+                if keystate.is_pressed("KeyL") { 0b0000_0000_0100_1100 } else 
+                if keystate.is_pressed("KeyM") { 0b0000_0000_0100_1101 } else 
+                if keystate.is_pressed("KeyN") { 0b0000_0000_0100_1110 } else 
+                if keystate.is_pressed("KeyO") { 0b0000_0000_0100_1111 } else 
+                if keystate.is_pressed("KeyP") { 0b0000_0000_0101_0000 } else 
+                if keystate.is_pressed("KeyQ") { 0b0000_0000_0101_0001 } else 
+                if keystate.is_pressed("KeyR") { 0b0000_0000_0101_0010 } else 
+                if keystate.is_pressed("KeyS") { 0b0000_0000_0101_0011 } else 
+                if keystate.is_pressed("KeyT") { 0b0000_0000_0101_0100 } else 
+                if keystate.is_pressed("KeyU") { 0b0000_0000_0101_0101 } else 
+                if keystate.is_pressed("KeyV") { 0b0000_0000_0101_0110 } else 
+                if keystate.is_pressed("KeyW") { 0b0000_0000_0101_0111 } else 
+                if keystate.is_pressed("KeyX") { 0b0000_0000_0101_1000 } else 
+                if keystate.is_pressed("KeyY") { 0b0000_0000_0101_1001 } else 
+                if keystate.is_pressed("KeyZ") { 0b0000_0000_0101_1010 } else
+                { 0b0000_0000_0000_0000 }
+            } else {
+                if keystate.is_pressed("KeyA") { 0b0000_0000_0110_0001 } else 
+                if keystate.is_pressed("KeyB") { 0b0000_0000_0110_0010 } else 
+                if keystate.is_pressed("KeyC") { 0b0000_0000_0110_0011 } else 
+                if keystate.is_pressed("KeyD") { 0b0000_0000_0110_0100 } else 
+                if keystate.is_pressed("KeyE") { 0b0000_0000_0110_0101 } else 
+                if keystate.is_pressed("KeyF") { 0b0000_0000_0110_0110 } else 
+                if keystate.is_pressed("KeyG") { 0b0000_0000_0110_0111 } else 
+                if keystate.is_pressed("KeyH") { 0b0000_0000_0110_1000 } else 
+                if keystate.is_pressed("KeyI") { 0b0000_0000_0110_1001 } else 
+                if keystate.is_pressed("KeyJ") { 0b0000_0000_0110_1010 } else 
+                if keystate.is_pressed("KeyK") { 0b0000_0000_0110_1011 } else 
+                if keystate.is_pressed("KeyL") { 0b0000_0000_0110_1100 } else 
+                if keystate.is_pressed("KeyM") { 0b0000_0000_0110_1101 } else 
+                if keystate.is_pressed("KeyN") { 0b0000_0000_0110_1110 } else 
+                if keystate.is_pressed("KeyO") { 0b0000_0000_0110_1111 } else 
+                if keystate.is_pressed("KeyP") { 0b0000_0000_0111_0000 } else 
+                if keystate.is_pressed("KeyQ") { 0b0000_0000_0111_0001 } else 
+                if keystate.is_pressed("KeyR") { 0b0000_0000_0111_0010 } else 
+                if keystate.is_pressed("KeyS") { 0b0000_0000_0111_0011 } else 
+                if keystate.is_pressed("KeyT") { 0b0000_0000_0111_0100 } else 
+                if keystate.is_pressed("KeyU") { 0b0000_0000_0111_0101 } else 
+                if keystate.is_pressed("KeyV") { 0b0000_0000_0111_0110 } else 
+                if keystate.is_pressed("KeyW") { 0b0000_0000_0111_0111 } else 
+                if keystate.is_pressed("KeyX") { 0b0000_0000_0111_1000 } else 
+                if keystate.is_pressed("KeyY") { 0b0000_0000_0111_1001 } else 
+                if keystate.is_pressed("KeyZ") { 0b0000_0000_0111_1010 } else 
+                { 0b0000_0000_0000_0000 }
             }
-        )
+        }
     }
 }
 

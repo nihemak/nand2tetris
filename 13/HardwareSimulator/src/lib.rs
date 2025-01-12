@@ -1,4 +1,4 @@
-mod boolean_logic;
+pub mod boolean_logic;
 mod helper;
 mod boolean_arithmetic;
 mod sequential_circuit;
