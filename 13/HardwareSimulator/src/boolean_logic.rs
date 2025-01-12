@@ -27,8 +27,16 @@ pub fn mux(a: bit, b: bit, sel: bit) -> bit {
     and(or(a, sel), or(b, not(sel)))
 }
 
+pub fn mux_built_in(a: bit, b: bit, sel: bit) -> bit {
+    (a || sel) && (b || !sel)
+}
+
 pub fn dmux(input: bit, sel: bit) -> (bit, bit) {
     (and(input, not(sel)), and(input, sel))
+}
+
+pub fn dmux_built_in(input: bit, sel: bit) -> (bit, bit) {    
+    (input && !sel, input && sel)
 }
 
 pub fn not16(input: word) -> word {
@@ -39,10 +47,26 @@ pub fn not16(input: word) -> word {
     word
 }
 
+pub fn not16_built_in(input: word) -> word {
+    let mut word = u16_to_word(0b0000_0000_0000_0000);
+    for i in 0..16 {
+        word[i] = !input[i];
+    }
+    word
+}
+
 pub fn and16(a: word, b: word) -> word {
     let mut word = u16_to_word(0b0000_0000_0000_0000);
     for i in 0..16 {
         word[i] = and(a[i],  b[i]);
+    }
+    word
+}
+
+pub fn and16_built_in(a: word, b: word) -> word {
+    let mut word = u16_to_word(0b0000_0000_0000_0000);
+    for i in 0..16 {
+        word[i] = a[i] && b[i];
     }
     word
 }
@@ -63,6 +87,14 @@ pub fn mux16(a: word, b: word, sel: bit) -> word {
     word
 }
 
+pub fn mux16_built_in(a: word, b: word, sel: bit) -> word {
+    let mut word = u16_to_word(0b0000_0000_0000_0000);
+    for i in 0..16 {
+        word[i] = mux_built_in(a[i],  b[i],  sel);
+    }
+    word
+}
+
 pub fn or8way(input: [bit; 8]) -> bit {
     or(
         or(or(input[0], input[1]), or(input[2], input[3])), 
@@ -70,8 +102,16 @@ pub fn or8way(input: [bit; 8]) -> bit {
     )
 }
 
+pub fn or8way_built_in(input: [bit; 8]) -> bit {
+    input[0] || input[1] || input[2] || input[3] || input[4] || input[5] || input[6] || input[7]
+}
+
 pub fn mux4way16(a: word, b: word, c: word, d: word, sel: [bit; 2]) -> word {
     mux16(mux16(a, b, sel[0]), mux16(c, d, sel[0]), sel[1])
+}
+
+pub fn mux4way16_built_in(a: word, b: word, c: word, d: word, sel: [bit; 2]) -> word {
+    mux16_built_in(mux16_built_in(a, b, sel[0]), mux16_built_in(c, d, sel[0]), sel[1])
 }
 
 pub fn mux8way16(a: word, b: word, c: word, d: word, e: word, f: word, g: word, h: word, sel: [bit; 3]) -> word {
@@ -83,10 +123,26 @@ pub fn mux8way16(a: word, b: word, c: word, d: word, e: word, f: word, g: word, 
     )
 }
 
+pub fn mux8way16_built_in(a: word, b: word, c: word, d: word, e: word, f: word, g: word, h: word, sel: [bit; 3]) -> word {
+    let sel1 = [sel[0], sel[1]];
+    mux16_built_in(
+        mux4way16_built_in(a ,b, c, d, sel1),
+        mux4way16_built_in(e ,f, g, h, sel1),
+        sel[2]
+    )
+}
+
 pub fn dmux4way(input: bit, sel: [bit; 2]) -> (bit, bit, bit, bit) {
     let (w0, w1) = dmux(input, sel[0]);
     let (a, c) = dmux(w0, sel[1]);
     let (b, d) = dmux(w1, sel[1]);
+    (a, b, c, d)
+}
+
+pub fn dmux4way_built_in(input: bit, sel: [bit; 2]) -> (bit, bit, bit, bit) {
+    let (w0, w1) = dmux_built_in(input, sel[0]);
+    let (a, c) = dmux_built_in(w0, sel[1]);
+    let (b, d) = dmux_built_in(w1, sel[1]);
     (a, b, c, d)
 }
 
@@ -96,6 +152,15 @@ pub fn dmux8way(input: bit, sel: [bit; 3]) -> (bit, bit, bit, bit, bit, bit, bit
     let (b, f) = dmux(w1, sel[2]);
     let (c, g) = dmux(w2, sel[2]);
     let (d, h) = dmux(w3, sel[2]);
+    (a, b, c, d, e, f, g, h)
+}
+
+pub fn dmux8way_built_in(input: bit, sel: [bit; 3]) -> (bit, bit, bit, bit, bit, bit, bit, bit) {
+    let (w0, w1, w2, w3) = dmux4way_built_in(input, [sel[0], sel[1]]);
+    let (a, e) = dmux_built_in(w0, sel[2]);
+    let (b, f) = dmux_built_in(w1, sel[2]);
+    let (c, g) = dmux_built_in(w2, sel[2]);
+    let (d, h) = dmux_built_in(w3, sel[2]);
     (a, b, c, d, e, f, g, h)
 }
 
