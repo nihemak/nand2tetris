@@ -10,6 +10,10 @@ pub fn u8_to_bits(input: u8) -> [bit; 8] {
     bits
 }
 
+pub fn u8_to_1bit(input: u8) -> bit {
+    input != 0
+}
+
 pub fn u8_to_3bit(input: u8) -> [bit; 3] {
     let bits = u8_to_bits(input);
     let mut res = [false; 3];
