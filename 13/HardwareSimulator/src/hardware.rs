@@ -3,18 +3,19 @@ use crate::helper::*;
 use crate::boolean_arithmetic::*;
 use crate::sequential_circuit::*;
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Screen {
-    rams: [RAM4K; 2],
+    rams: Vec<RAM4K>,
     screen: [bit; 131072],
 }
 
 impl Screen {
     pub fn new() -> Self {
-        Screen { 
-            rams: [RAM4K::new(); 2],
-            screen: [false; 131072],
+        let mut rams = Vec::new();
+        for _ in 0..2 {
+            rams.push(RAM4K::new());
         }
+        Screen { rams, screen: [false; 131072] }
     }
 
     fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 13]) {
@@ -59,7 +60,7 @@ impl Screen {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct ScreenBuiltIn {
     screen: [bit; 131072],
 }
@@ -98,7 +99,7 @@ impl ScreenBuiltIn {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct Keyboard {
     key_code: Register,
 }
@@ -117,7 +118,7 @@ impl Keyboard {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct KeyboardBuiltIn {
     key_code: word,
 }
@@ -136,7 +137,7 @@ impl KeyboardBuiltIn {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Memory {
     ram: RAM16K,
     screen: Screen,
@@ -171,7 +172,7 @@ impl Memory {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct MemoryBuiltIn {
     ram: RAM16KBuiltIn,
     screen: ScreenBuiltIn,
@@ -206,7 +207,7 @@ impl MemoryBuiltIn {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct CPU {
     a_register: Register,
     d_register: Register,
@@ -271,7 +272,7 @@ impl CPU {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct CPUBuiltIn {
     a_register: Register,
     d_register: Register,
@@ -337,16 +338,18 @@ impl CPUBuiltIn {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct ROM32K {
-    rams: [RAM4K; 8]
+    rams: Vec<RAM4K>,
 }
 
 impl ROM32K {
     pub fn new() -> Self {
-        ROM32K {
-            rams: [RAM4K::new(); 8]
+        let mut rams = Vec::new();
+        for _ in 0..8 {
+            rams.push(RAM4K::new());
         }
+        ROM32K { rams }
     }
 
     pub fn update(&mut self, clk: bit, input: word, address: [bit; 15]) {
@@ -397,16 +400,18 @@ impl ROM32K {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct ROM32KBuiltIn {
-    rams: [RAM4KBuiltIn; 8],
+    rams: Vec<RAM4KBuiltIn>,
 }
 
 impl ROM32KBuiltIn {
     pub fn new() -> Self {
-        ROM32KBuiltIn {
-            rams: [RAM4KBuiltIn::new(); 8],
+        let mut rams = Vec::new();
+        for _ in 0..8 {
+            rams.push(RAM4KBuiltIn::new());
         }
+        ROM32KBuiltIn { rams }
     }
 
     pub fn update(&mut self, clk: bit, input: word, address: [bit; 15]) {
@@ -456,7 +461,7 @@ impl ROM32KBuiltIn {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Computer {
     rom: ROM32K,
     cpu: CPU,
@@ -504,7 +509,7 @@ impl Computer {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct ComputerBuiltIn {
     rom: ROM32KBuiltIn,
     cpu: CPUBuiltIn,
