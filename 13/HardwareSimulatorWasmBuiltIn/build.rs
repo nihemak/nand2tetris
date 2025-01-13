@@ -8,6 +8,6 @@ fn main() {
         // https://github.com/rustwasm/wasm-bindgen/issues/3368#issuecomment-1483954797
         // https://github.com/aduros/wasm4/blob/main/cli/assets/templates/rust/.cargo/config.toml
         // https://doc.rust-jp.rs/rust-by-example-ja/std/box.html
-        println!("cargo::rustc-link-arg=-zstack-size=6000000");
+        println!("cargo::rustc-link-arg=-zstack-size=1500000");
     }
 }
