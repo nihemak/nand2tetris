@@ -2,7 +2,7 @@
 
 ```bash
 # test all
-TEST=1 RUST_MIN_STACK=3000000 cargo test
+TEST=1 cargo test
 
 nvm i v14.15.1
 npm --version

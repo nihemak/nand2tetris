@@ -47,14 +47,18 @@ impl Bit {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct Register {
-    bits: [Bit; 16]
+    bits: Vec<Bit>,
 }
 
 impl Register {
     pub fn new() -> Self {
-        Register { bits: [Bit::new(); 16] }
+        let mut bits = Vec::new();
+        for _ in 0..16 {
+            bits.push(Bit::new());
+        }
+        Register { bits }
     }
 
     pub fn update(&mut self, clk: bit, input: word, load: bit) {
@@ -72,14 +76,18 @@ impl Register {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM8 {
-    registers: [Register; 8]
+    registers: Vec<Register>,
 }
 
 impl RAM8 {
     fn new() -> Self {
-        RAM8 { registers: [Register::new(); 8] }
+        let mut registers = Vec::new();
+        for _ in 0..8 {
+            registers.push(Register::new());
+        }
+        RAM8 { registers }
     }
 
     fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 3]) {
@@ -109,14 +117,18 @@ impl RAM8 {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM64 {
-    rams: [RAM8; 8]
+    rams: Vec<RAM8>,
 }
 
 impl RAM64 {
     fn new() -> Self {
-        RAM64 { rams: [RAM8::new(); 8] }
+        let mut rams = Vec::new();
+        for _ in 0..8 {
+            rams.push(RAM8::new());
+        }
+        RAM64 { rams }
     }
 
     fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 6]) {
@@ -150,14 +162,18 @@ impl RAM64 {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM512 {
-    rams: [RAM64; 8]
+    rams: Vec<RAM64>,
 }
 
 impl RAM512 {
     fn new() -> Self {
-        RAM512 { rams: [RAM64::new(); 8] }
+        let mut rams = Vec::new();
+        for _ in 0..8 {
+            rams.push(RAM64::new());
+        }
+        RAM512 { rams }
     }
 
     fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 9]) {
@@ -191,14 +207,18 @@ impl RAM512 {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM4K {
-    rams: [RAM512; 8]
+    rams: Vec<RAM512>,
 }
 
 impl RAM4K {
     pub fn new() -> Self {
-        RAM4K { rams: [RAM512::new(); 8] }
+        let mut rams = Vec::new();
+        for _ in 0..8 {
+            rams.push(RAM512::new());
+        }
+        RAM4K { rams }
     }
 
     pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 12]) {
@@ -232,14 +252,18 @@ impl RAM4K {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM4KBuiltIn {
-    ram: [word; 4096]
+    ram: Vec<word>,
 }
 
 impl RAM4KBuiltIn {
     pub fn new() -> Self {
-        RAM4KBuiltIn { ram: [u16_to_word(0b0000_0000_0000_0000); 4096] }
+        let mut ram = Vec::new();
+        for _ in 0..4096 {
+            ram.push(u16_to_word(0b0000_0000_0000_0000));
+        }
+        RAM4KBuiltIn { ram }
     }
 
     pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 12]) {
@@ -252,16 +276,18 @@ impl RAM4KBuiltIn {
 }
 
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM16K {
-    rams: [RAM4K; 4]
+    rams: Vec<RAM4K>,
 }
 
 impl RAM16K {
     pub fn new() -> Self {
-        RAM16K {
-            rams: [RAM4K::new(); 4]
+        let mut rams = Vec::new();
+        for _ in 0..4 {
+            rams.push(RAM4K::new());
         }
+        RAM16K { rams }
     }
 
     pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 14]) {
@@ -295,16 +321,18 @@ impl RAM16K {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct RAM16KBuiltIn {
-    ram: [word; 16384 /* 14bit */],
+    ram: Vec<word>,
 }
 
 impl RAM16KBuiltIn {
     pub fn new() -> Self {
-        RAM16KBuiltIn {
-            ram: [u16_to_word(0b0000_0000_0000_0000); 16384],
+        let mut ram = Vec::new();
+        for _ in 0..16384 /* 14bit */ {
+            ram.push(u16_to_word(0b0000_0000_0000_0000));
         }
+        RAM16KBuiltIn { ram }
     }
 
     pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 14]) {
@@ -318,7 +346,7 @@ impl RAM16KBuiltIn {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct PC {
     counter: Register
 }
@@ -348,7 +376,7 @@ impl PC {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct PCBuiltIn {
     counter: Register
 }
