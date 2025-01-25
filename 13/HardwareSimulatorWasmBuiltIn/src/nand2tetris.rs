@@ -1,6 +1,6 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use hardware_simulator::boolean_logic::bit;
+use hardware_simulator::boolean_logic::Binary;
 use hardware_simulator::hardware::ComputerBuiltIn;
 
 use crate::{
@@ -10,7 +10,7 @@ use crate::{
 #[derive(Clone)]
 pub struct Nand2Tetris {
     computer: Box<ComputerBuiltIn>,
-    screen: [bit; 131072],
+    screen: [Binary; 131072],
 }
 
 impl Nand2Tetris {
