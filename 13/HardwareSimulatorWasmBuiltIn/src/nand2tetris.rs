@@ -1,7 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use HardwareSimulator::boolean_logic::bit;
-use HardwareSimulator::hardware::ComputerBuiltIn;
+use hardware_simulator::boolean_logic::Binary;
+use hardware_simulator::hardware::ComputerBuiltIn;
 
 use crate::{
     engine::{ComputerSystem, KeyState, Renderer},
@@ -10,7 +10,7 @@ use crate::{
 #[derive(Clone)]
 pub struct Nand2Tetris {
     computer: Box<ComputerBuiltIn>,
-    screen: [bit; 131072],
+    screen: [Binary; 131072],
 }
 
 impl Nand2Tetris {
@@ -158,7 +158,7 @@ impl Nand2Tetris {
 
 #[async_trait(?Send)]
 impl ComputerSystem for Nand2Tetris {
-    async fn initialize(&mut self, renderer: &Renderer, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>> {
+    async fn initialize(&mut self, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>> {
         let mut nand2tetris = Box::new(Nand2Tetris::new());
         nand2tetris.computer.step(true, Nand2Tetris::get_keyboard_press_code(keystate));
         Ok(nand2tetris)

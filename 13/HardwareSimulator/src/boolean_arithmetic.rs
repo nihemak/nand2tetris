@@ -1,33 +1,33 @@
 use crate::boolean_logic::*;
 use crate::helper::*;
 
-pub fn half_adder(a: bit, b: bit) -> (bit, bit) {
+pub fn half_adder(a: Binary, b: Binary) -> (Binary, Binary) {
     let sum = xor(a, b);
     let carry = and(a, b);
     (sum, carry)
 }
 
-pub fn half_adder_built_in(a: bit, b: bit) -> (bit, bit) {
+pub fn half_adder_built_in(a: Binary, b: Binary) -> (Binary, Binary) {
     let sum = a ^ b;
     let carry = a && b;
     (sum, carry)
 }
 
-pub fn full_adder(a: bit, b: bit, c: bit) -> (bit, bit) {
+pub fn full_adder(a: Binary, b: Binary, c: Binary) -> (Binary, Binary) {
     let (sum0, carry0) = half_adder(a, b);
     let (sum, carry1) = half_adder(sum0, c);
     let carry = or(carry0, carry1);
     (sum, carry)
 }
 
-pub fn full_adder_built_in(a: bit, b: bit, c: bit) -> (bit, bit) {
+pub fn full_adder_built_in(a: Binary, b: Binary, c: Binary) -> (Binary, Binary) {
     let (sum0, carry0) = half_adder_built_in(a, b);
     let (sum, carry1) = half_adder_built_in(sum0, c);
     let carry = carry0 || carry1;
     (sum, carry)
 }
 
-pub fn add16(a: word, b: word) -> word {
+pub fn add16(a: Word, b: Word) -> Word {
     let (sum0, carry0) = half_adder(a[0], b[0]);
     let (sum1, carry1) = full_adder(a[1], b[1], carry0);
     let (sum2, carry2) = full_adder(a[2], b[2], carry1);
@@ -50,7 +50,7 @@ pub fn add16(a: word, b: word) -> word {
     ]
 }
 
-pub fn add16_built_in(a: word, b: word) -> word {
+pub fn add16_built_in(a: Word, b: Word) -> Word {
     let (sum0, carry0) = half_adder_built_in(a[0], b[0]);
     let (sum1, carry1) = full_adder_built_in(a[1], b[1], carry0);
     let (sum2, carry2) = full_adder_built_in(a[2], b[2], carry1);
@@ -73,24 +73,20 @@ pub fn add16_built_in(a: word, b: word) -> word {
     ]
 }
 
-pub fn inc16(input: word) -> word {
+pub fn inc16(input: Word) -> Word {
     add16(input, u16_to_word(0b0000_0000_0000_0001))
 }
 
-pub fn inc16_built_in(input: word) -> word {
-    add16_built_in(input, u16_to_word(0b0000_0000_0000_0001))
-}
-
 pub fn alu(
-    x: word,
-    y: word, 
-    zx: bit, 
-    nx: bit, 
-    zy: bit, 
-    ny: bit, 
-    f: bit, 
-    no: bit
-) -> (word, bit, bit) {
+    x: Word,
+    y: Word, 
+    zx: Binary, 
+    nx: Binary, 
+    zy: Binary, 
+    ny: Binary, 
+    f: Binary, 
+    no: Binary
+) -> (Word, Binary, Binary) {
     let x1 = mux16(x, u16_to_word(0b0000_0000_0000_0000), zx);
     let x2 = mux16(x1, not16(x1), nx);
     let y1 = mux16(y, u16_to_word(0b0000_0000_0000_0000), zy);
@@ -107,15 +103,15 @@ pub fn alu(
 }
 
 pub fn alu_built_in(
-    x: word,
-    y: word, 
-    zx: bit, 
-    nx: bit, 
-    zy: bit, 
-    ny: bit, 
-    f: bit, 
-    no: bit
-) -> (word, bit, bit) {
+    x: Word,
+    y: Word, 
+    zx: Binary, 
+    nx: Binary, 
+    zy: Binary, 
+    ny: Binary, 
+    f: Binary, 
+    no: Binary
+) -> (Word, Binary, Binary) {
     let x1 = mux16_built_in(x, u16_to_word(0b0000_0000_0000_0000), zx);
     let x2 = mux16_built_in(x1, not16(x1), nx);
     let y1 = mux16_built_in(y, u16_to_word(0b0000_0000_0000_0000), zy);

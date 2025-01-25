@@ -7,7 +7,7 @@ use sdl2::rect::{Rect};
 use std::time::{Duration};
 use sdl2::render::WindowCanvas;
 
-use HardwareSimulator::hardware::Computer;
+use hardware_simulator::hardware::Computer;
 
 pub fn main() {
     let sdl_context = sdl2::init().unwrap();

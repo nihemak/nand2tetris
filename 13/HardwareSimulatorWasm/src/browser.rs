@@ -1,14 +1,14 @@
 use anyhow::{anyhow, Result};
 use std::future::Future;
 use wasm_bindgen::{
-    closure::WasmClosure, closure::WasmClosureFnOnce, prelude::Closure, JsCast, JsValue,
+    closure::WasmClosure, prelude::Closure, JsCast,
 };
-use wasm_bindgen_futures::JsFuture;
 use web_sys::{
-    CanvasRenderingContext2d, Document, HtmlCanvasElement, HtmlImageElement, Response, Window,
+    CanvasRenderingContext2d, Document, HtmlCanvasElement, Window,
 };
 
 // Straight taken from https://rustwasm.github.io/book/game-of-life/debugging.html
+#[allow(unused_macros)]
 macro_rules! log {
     ( $( $t:tt )* ) => {
         web_sys::console::log_1(&format!( $( $t )* ).into());

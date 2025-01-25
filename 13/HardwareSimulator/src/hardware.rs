@@ -6,7 +6,7 @@ use crate::sequential_circuit::*;
 #[derive(Clone)]
 pub struct Screen {
     rams: Vec<RAM4K>,
-    screen: [bit; 131072],
+    screen: [Binary; 131072],
 }
 
 impl Screen {
@@ -18,7 +18,7 @@ impl Screen {
         Screen { rams, screen: [false; 131072] }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 13]) {
+    fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 13]) {
         let (a, b) = dmux(load, address[12]);
         let address_low = bit13_to_bit12(address);
         self.rams[0].update(clk, input, a, address_low);
@@ -35,7 +35,7 @@ impl Screen {
         }
     }
 
-    fn get(&self, clk: bit, address: [bit; 13]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 13]) -> Word {
         let address_low = bit13_to_bit12(address);
         mux16(
             self.rams[0].get(clk, address_low),
@@ -44,7 +44,7 @@ impl Screen {
         )
     }
 
-    pub fn get_all(&self) -> [bit; 131072] {
+    pub fn get_all(&self) -> [Binary; 131072] {
         // let mut screen = [false; 131072];
         // let mut x = 0;
         // for i in 0..8192 {
@@ -62,7 +62,7 @@ impl Screen {
 
 #[derive(Clone)]
 pub struct ScreenBuiltIn {
-    screen: [bit; 131072],
+    screen: [Binary; 131072],
 }
 
 impl ScreenBuiltIn {
@@ -72,7 +72,7 @@ impl ScreenBuiltIn {
         }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 13]) {
+    fn update(&mut self, _clk: Binary, input: Word, load: Binary, address: [Binary; 13]) {
         if load {
             let address_num = bit13_to_u16(address);
             if address_num <= 24575 {
@@ -84,7 +84,7 @@ impl ScreenBuiltIn {
         }
     }
 
-    fn get(&self, clk: bit, address: [bit; 13]) -> word {
+    fn get(&self, _clk: Binary, address: [Binary; 13]) -> Word {
         let address_num = bit13_to_u16(address);
         let screen_address: u32 = 16 * (address_num as u32);
         let mut word = u16_to_word(0b0000000000000000);
@@ -94,7 +94,7 @@ impl ScreenBuiltIn {
         word
     }
 
-    pub fn get_all(&self) -> [bit; 131072] {
+    pub fn get_all(&self) -> [Binary; 131072] {
         self.screen
     }
 }
@@ -109,18 +109,18 @@ impl Keyboard {
         Keyboard { key_code: Register::new() }
     }
 
-    fn update(&mut self, clk: bit, key_code: word) {
+    fn update(&mut self, clk: Binary, key_code: Word) {
         self.key_code.update(clk, key_code, true);
     }
 
-    fn get(&self, clk: bit) -> word {
+    fn get(&self, clk: Binary) -> Word {
         self.key_code.get(clk)
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct KeyboardBuiltIn {
-    key_code: word,
+    key_code: Word,
 }
 
 impl KeyboardBuiltIn {
@@ -128,11 +128,11 @@ impl KeyboardBuiltIn {
         KeyboardBuiltIn { key_code: u16_to_word(0b0000000000000000) }
     }
 
-    fn update(&mut self, clk: bit, key_code: word) {
+    fn update(&mut self, _clk: Binary, key_code: Word) {
         self.key_code = key_code;
     }
 
-    fn get(&self, clk: bit) -> word {
+    fn get(&self, _clk: Binary) -> Word {
         self.key_code
     }
 }
@@ -153,21 +153,21 @@ impl Memory {
         }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 15], key_code: word) {
+    fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 15], key_code: Word) {
         let (ram_load, screen_load) = dmux(load, address[14]);
         self.ram.update(clk, input, ram_load, bit15_to_bit14(address));
         self.screen.update(clk, input, screen_load, bit15_to_bit13(address));
         self.keyboard.update(clk, key_code);
     }
 
-    fn get(&self, clk: bit, address: [bit; 15]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 15]) -> Word {
         let ram_output = self.ram.get(clk, bit15_to_bit14(address));
         let screen_output = self.screen.get(clk, bit15_to_bit13(address));
         let keyboard_output = self.keyboard.get(clk);
         mux4way16(ram_output, ram_output, screen_output, keyboard_output, [address[13], address[14]])
     }
 
-    pub fn get_screen(&self) -> [bit; 131072] {
+    pub fn get_screen(&self) -> [Binary; 131072] {
         self.screen.get_all()
     }
 }
@@ -188,21 +188,21 @@ impl MemoryBuiltIn {
         }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 15], key_code: word) {
+    fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 15], key_code: Word) {
         let (ram_load, screen_load) = dmux_built_in(load, address[14]);
         self.ram.update(clk, input, ram_load, bit15_to_bit14(address));
         self.screen.update(clk, input, screen_load, bit15_to_bit13(address));
         self.keyboard.update(clk, key_code);
     }
 
-    fn get(&self, clk: bit, address: [bit; 15]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 15]) -> Word {
         let ram_output = self.ram.get(clk, bit15_to_bit14(address));
         let screen_output = self.screen.get(clk, bit15_to_bit13(address));
         let keyboard_output = self.keyboard.get(clk);
         mux4way16_built_in(ram_output, ram_output, screen_output, keyboard_output, [address[13], address[14]])
     }
 
-    pub fn get_screen(&self) -> [bit; 131072] {
+    pub fn get_screen(&self) -> [Binary; 131072] {
         self.screen.get_all()
     }
 }
@@ -211,8 +211,8 @@ impl MemoryBuiltIn {
 pub struct CPU {
     a_register: Register,
     d_register: Register,
-    out_m: word,
-    write_m: bit,
+    out_m: Word,
+    write_m: Binary,
     pc: PC
 }
 
@@ -227,7 +227,7 @@ impl CPU {
         }
     }
 
-    fn update(&mut self, clk: bit, in_m: word, instruction: word, reset: bit) {
+    fn update(&mut self, clk: Binary, in_m: Word, instruction: Word, reset: Binary) {
         self.write_m = and(instruction[15], instruction[3]);
 
         let out_d = self.d_register.get(false);
@@ -264,7 +264,7 @@ impl CPU {
         self.pc.update(clk, out_a, write_pc, true, reset);
     }
 
-    fn get(&self, clk: bit) -> (word, bit, word, [bit; 15]) {
+    fn get(&self, clk: Binary) -> (Word, Binary, Word, [Binary; 15]) {
         let pc = self.pc.get(clk);
         let out_a = self.a_register.get(clk);
         let address_m = word_to_bit15(out_a);
@@ -276,8 +276,8 @@ impl CPU {
 pub struct CPUBuiltIn {
     a_register: Register,
     d_register: Register,
-    out_m: word,
-    write_m: bit,
+    out_m: Word,
+    write_m: Binary,
     pc: PC
 }
 
@@ -292,7 +292,7 @@ impl CPUBuiltIn {
         }
     }
 
-    fn update(&mut self, clk: bit, in_m: word, instruction: word, reset: bit) {
+    fn update(&mut self, clk: Binary, in_m: Word, instruction: Word, reset: Binary) {
         self.write_m = instruction[15] && instruction[3];
 
         let out_d = self.d_register.get(false);
@@ -330,7 +330,7 @@ impl CPUBuiltIn {
         self.pc.update(clk, out_a, write_pc, true, reset);
     }
 
-    fn get(&self, clk: bit) -> (word, bit, word, [bit; 15]) {
+    fn get(&self, clk: Binary) -> (Word, Binary, Word, [Binary; 15]) {
         let pc = self.pc.get(clk);
         let out_a = self.a_register.get(clk);
         let address_m = word_to_bit15(out_a);
@@ -352,7 +352,7 @@ impl ROM32K {
         ROM32K { rams }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, address: [bit; 15]) {
+    pub fn update(&mut self, clk: Binary, input: Word, address: [Binary; 15]) {
         let address_low = bit15_to_bit12(address);
         let address_high = [address[12], address[13], address[14]];
         let (a, b, c, d, e, f, g, h) = dmux8way(true, address_high);
@@ -366,7 +366,7 @@ impl ROM32K {
         self.rams[7].update(clk, input, h, address_low);
     }
 
-    fn get(&self, clk: bit, address: [bit; 15]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 15]) -> Word {
         let address_low = bit15_to_bit12(address);
         let address_high = [address[12], address[13], address[14]];
         mux8way16(
@@ -414,7 +414,7 @@ impl ROM32KBuiltIn {
         ROM32KBuiltIn { rams }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, address: [bit; 15]) {
+    pub fn update(&mut self, clk: Binary, input: Word, address: [Binary; 15]) {
         let address_low = bit15_to_bit12(address);
         let address_high = [address[12], address[13], address[14]];
         let (a, b, c, d, e, f, g, h) = dmux8way_built_in(true, address_high);
@@ -428,7 +428,7 @@ impl ROM32KBuiltIn {
         self.rams[7].update(clk, input, h, address_low);
     }
 
-    fn get(&self, clk: bit, address: [bit; 15]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 15]) -> Word {
         let address_low = bit15_to_bit12(address);
         let address_high = [address[12], address[13], address[14]];
         mux8way16_built_in(
@@ -466,8 +466,8 @@ pub struct Computer {
     rom: ROM32K,
     cpu: CPU,
     memory: Memory,
-    in_m: word,
-    pc_address: [bit; 15]
+    in_m: Word,
+    pc_address: [Binary; 15]
 }
 
 impl Computer {
@@ -485,7 +485,7 @@ impl Computer {
         self.rom.load(instructions);
     }
 
-    fn update(&mut self, clk: bit, reset: bit, key_code: word) {
+    fn update(&mut self, clk: Binary, reset: Binary, key_code: Word) {
         let instruction = self.rom.get(clk, self.pc_address);
         // println!("instruction: {}", word_to_u16(instruction));
         self.cpu.update(clk, self.in_m, instruction, reset);
@@ -496,7 +496,7 @@ impl Computer {
         self.in_m = self.memory.get(clk, address_m);
     }
 
-    pub fn step(&mut self, reset: bit, word: u16) {
+    pub fn step(&mut self, reset: Binary, word: u16) {
         let word = u16_to_word(word);
         let mut clk = true;
         self.update(clk, reset, word);
@@ -504,7 +504,7 @@ impl Computer {
         self.update(clk, reset, word);
     }
 
-    pub fn get_screen(&self) -> [bit; 131072] {
+    pub fn get_screen(&self) -> [Binary; 131072] {
         self.memory.get_screen()
     }
 }
@@ -514,8 +514,8 @@ pub struct ComputerBuiltIn {
     rom: ROM32KBuiltIn,
     cpu: CPUBuiltIn,
     memory: MemoryBuiltIn,
-    in_m: word,
-    pc_address: [bit; 15]
+    in_m: Word,
+    pc_address: [Binary; 15]
 }
 
 impl ComputerBuiltIn {
@@ -533,7 +533,7 @@ impl ComputerBuiltIn {
         self.rom.load(instructions);
     }
 
-    fn update(&mut self, clk: bit, reset: bit, key_code: word) {
+    fn update(&mut self, clk: Binary, reset: Binary, key_code: Word) {
         let instruction = self.rom.get(clk, self.pc_address);
         // println!("instruction: {}", word_to_u16(instruction));
         self.cpu.update(clk, self.in_m, instruction, reset);
@@ -544,7 +544,7 @@ impl ComputerBuiltIn {
         self.in_m = self.memory.get(clk, address_m);
     }
 
-    pub fn step(&mut self, reset: bit, word: u16) {
+    pub fn step(&mut self, reset: Binary, word: u16) {
         let word = u16_to_word(word);
         let mut clk = true;
         self.update(clk, reset, word);
@@ -552,7 +552,7 @@ impl ComputerBuiltIn {
         self.update(clk, reset, word);
     }
 
-    pub fn get_screen(&self) -> [bit; 131072] {
+    pub fn get_screen(&self) -> [Binary; 131072] {
         self.memory.get_screen()
     }
 }
@@ -1488,10 +1488,10 @@ mod tests {
         let mut keyboard = Keyboard::new();
 
         let word_0 = u16_to_word(0b0000_0000_0000_0000);
-        let word_a = u16_to_word(0b0000_0000_0100_0001);  // a
-        let word_A = u16_to_word(0b0000_0000_0110_0001);  // A
+        let word_a1 = u16_to_word(0b0000_0000_0100_0001);  // a
+        let word_a2 = u16_to_word(0b0000_0000_0110_0001);  // A
         
-        let mut word = word_a;
+        let mut word = word_a1;
         keyboard.update(clk, word);
         let mut key_code = keyboard.get(clk);
         assert_eq!(word_0, key_code);
@@ -1500,20 +1500,20 @@ mod tests {
 
         keyboard.update(clk, word);
         key_code = keyboard.get(clk);
-        assert_eq!(word_a, key_code);
+        assert_eq!(word_a1, key_code);
 
         clk = !clk;
-        word = word_A;
+        word = word_a2;
 
         keyboard.update(clk, word);
         key_code = keyboard.get(clk);
-        assert_eq!(word_a, key_code);
+        assert_eq!(word_a1, key_code);
 
         clk = !clk;
 
         keyboard.update(clk, word);
         key_code = keyboard.get(clk);
-        assert_eq!(word_A, key_code);
+        assert_eq!(word_a2, key_code);
     }
 
     #[test]
