@@ -1,7 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use HardwareSimulator::boolean_logic::bit;
-use HardwareSimulator::hardware::ComputerBuiltIn;
+use hardware_simulator::boolean_logic::bit;
+use hardware_simulator::hardware::ComputerBuiltIn;
 
 use crate::{
     engine::{ComputerSystem, KeyState, Renderer},

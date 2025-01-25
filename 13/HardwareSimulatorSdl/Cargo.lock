@@ -3,18 +3,6 @@
 version = 4
 
 [[package]]
-name = "HardwareSimulator"
-version = "0.1.0"
-
-[[package]]
-name = "HardwareSimulatorSdl"
-version = "0.1.0"
-dependencies = [
- "HardwareSimulator",
- "sdl2",
-]
-
-[[package]]
 name = "autocfg"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -55,6 +43,18 @@ name = "fuchsia-cprng"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a06f77d526c1a601b7c4cdd98f54b5eaabffc14d5f2f0296febdc7f357c6d3ba"
+
+[[package]]
+name = "hardware_simulator"
+version = "0.1.0"
+
+[[package]]
+name = "hardware_simulator_sdl"
+version = "0.1.0"
+dependencies = [
+ "hardware_simulator",
+ "sdl2",
+]
 
 [[package]]
 name = "lazy_static"
