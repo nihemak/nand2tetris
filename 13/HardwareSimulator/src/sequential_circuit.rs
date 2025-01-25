@@ -376,35 +376,6 @@ impl PC {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct PCBuiltIn {
-    counter: Register
-}
-
-impl PCBuiltIn {
-    pub fn new() -> Self {
-        PCBuiltIn { counter: Register::new() }
-    }
-
-    pub fn update(&mut self, clk: bit, input: word, load: bit, inc: bit, reset: bit) {
-        let out0 = self.get(!clk);
-        let incout = inc16_built_in(out0);
-        let out1 = mux16_built_in(out0, incout, inc);
-        let out2 = mux4way16_built_in(
-            out1,
-            input,
-            u16_to_word(0b0000_0000_0000_0000),
-            u16_to_word(0b0000_0000_0000_0000),
-            [load, reset]
-        );
-        self.counter.update(clk, out2, true);
-    }
-
-    pub fn get(&self, clk: bit) -> word {
-        self.counter.get(clk)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
