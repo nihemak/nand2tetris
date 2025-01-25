@@ -266,11 +266,11 @@ impl RAM4KBuiltIn {
         RAM4KBuiltIn { ram }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 12]) {
+    pub fn update(&mut self, _clk: bit, input: word, _load: bit, address: [bit; 12]) {
         self.ram[bit12_to_u16(address) as usize] = input;
     }
 
-    pub fn get(&self, clk: bit, address: [bit; 12]) -> word {
+    pub fn get(&self, _clk: bit, address: [bit; 12]) -> word {
         self.ram[bit12_to_u16(address) as usize]
     }
 }
@@ -341,7 +341,7 @@ impl RAM16KBuiltIn {
         }
     }
 
-    pub fn get(&self, clk: bit, address: [bit; 14]) -> word {
+    pub fn get(&self, _clk: bit, address: [bit; 14]) -> word {
         self.ram[bit14_to_u16(address) as usize]
     }
 }

@@ -72,7 +72,7 @@ impl ScreenBuiltIn {
         }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 13]) {
+    fn update(&mut self, _clk: bit, input: word, load: bit, address: [bit; 13]) {
         if load {
             let address_num = bit13_to_u16(address);
             if address_num <= 24575 {
@@ -84,7 +84,7 @@ impl ScreenBuiltIn {
         }
     }
 
-    fn get(&self, clk: bit, address: [bit; 13]) -> word {
+    fn get(&self, _clk: bit, address: [bit; 13]) -> word {
         let address_num = bit13_to_u16(address);
         let screen_address: u32 = 16 * (address_num as u32);
         let mut word = u16_to_word(0b0000000000000000);
@@ -128,11 +128,11 @@ impl KeyboardBuiltIn {
         KeyboardBuiltIn { key_code: u16_to_word(0b0000000000000000) }
     }
 
-    fn update(&mut self, clk: bit, key_code: word) {
+    fn update(&mut self, _clk: bit, key_code: word) {
         self.key_code = key_code;
     }
 
-    fn get(&self, clk: bit) -> word {
+    fn get(&self, _clk: bit) -> word {
         self.key_code
     }
 }
