@@ -4,8 +4,8 @@ use crate::boolean_arithmetic::*;
 
 #[derive(Debug, Copy, Clone)]
 pub struct DFF {
-    past_bit: bit,
-    new_bit: bit
+    past_bit: Binary,
+    new_bit: Binary
 }
 
 impl DFF {
@@ -16,14 +16,14 @@ impl DFF {
         }
     }
 
-    pub fn update(&mut self, clk: bit, a: bit) {
+    pub fn update(&mut self, clk: Binary, a: Binary) {
         if clk {
             self.past_bit = self.new_bit;
             self.new_bit = a
         }
     }
 
-    pub fn get(self, clk: bit) -> bit {
+    pub fn get(self, clk: Binary) -> Binary {
         if clk { self.past_bit } else { self.new_bit }
     }
 }
@@ -38,11 +38,11 @@ impl Bit {
         Bit { dff: DFF::new() }
     }
 
-    pub fn update(&mut self, clk: bit, input: bit, load: bit) {
+    pub fn update(&mut self, clk: Binary, input: Binary, load: Binary) {
         self.dff.update(clk, mux(self.get(!clk), input, load))
     }
 
-    pub fn get(&self, clk: bit) -> bit {
+    pub fn get(&self, clk: Binary) -> Binary {
         self.dff.get(clk)
     }
 }
@@ -61,13 +61,13 @@ impl Register {
         Register { bits }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, load: bit) {
+    pub fn update(&mut self, clk: Binary, input: Word, load: Binary) {
         for i in 0..16 {
             self.bits[i].update(clk, input[i], load);
         }
     }
 
-    pub fn get(&self, clk: bit) -> word {
+    pub fn get(&self, clk: Binary) -> Word {
         let mut word = u16_to_word(0b0000_0000_0000_0000);
         for i in 0..16 {
             word[i] = self.bits[i].get(clk);
@@ -90,7 +90,7 @@ impl RAM8 {
         RAM8 { registers }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 3]) {
+    fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 3]) {
         let (a, b, c, d, e, f, g, h) = dmux8way(load, address);
         self.registers[0].update(clk, input, a);
         self.registers[1].update(clk, input, b);
@@ -102,7 +102,7 @@ impl RAM8 {
         self.registers[7].update(clk, input, h);
     }
 
-    fn get(&self, clk: bit, address: [bit; 3]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 3]) -> Word {
         mux8way16(
             self.registers[0].get(clk),
             self.registers[1].get(clk),
@@ -131,7 +131,7 @@ impl RAM64 {
         RAM64 { rams }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 6]) {
+    fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 6]) {
         let address_low = [address[0], address[1], address[2]];
         let address_high = [address[3], address[4], address[5]];
         let (a, b, c, d, e, f, g, h) = dmux8way(load, address_high);
@@ -145,7 +145,7 @@ impl RAM64 {
         self.rams[7].update(clk, input, h, address_low);
     }
 
-    fn get(&self, clk: bit, address: [bit; 6]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 6]) -> Word {
         let address_low = [address[0], address[1], address[2]];
         let address_high = [address[3], address[4], address[5]];
         mux8way16(
@@ -176,7 +176,7 @@ impl RAM512 {
         RAM512 { rams }
     }
 
-    fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 9]) {
+    fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 9]) {
         let address_low = [address[0], address[1], address[2], address[3], address[4], address[5]];
         let address_high = [address[6], address[7], address[8]];
         let (a, b, c, d, e, f, g, h) = dmux8way(load, address_high);
@@ -190,7 +190,7 @@ impl RAM512 {
         self.rams[7].update(clk, input, h, address_low);
     }
 
-    fn get(&self, clk: bit, address: [bit; 9]) -> word {
+    fn get(&self, clk: Binary, address: [Binary; 9]) -> Word {
         let address_low = [address[0], address[1], address[2], address[3], address[4], address[5]];
         let address_high = [address[6], address[7], address[8]];
         mux8way16(
@@ -221,7 +221,7 @@ impl RAM4K {
         RAM4K { rams }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 12]) {
+    pub fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 12]) {
         let address_low = [address[0], address[1], address[2], address[3], address[4], address[5], address[6], address[7], address[8]];
         let address_high = [address[9], address[10], address[11]];
         let (a, b, c, d, e, f, g, h) = dmux8way(load, address_high);
@@ -235,7 +235,7 @@ impl RAM4K {
         self.rams[7].update(clk, input, h, address_low);
     }
 
-    pub fn get(&self, clk: bit, address: [bit; 12]) -> word {
+    pub fn get(&self, clk: Binary, address: [Binary; 12]) -> Word {
         let address_low = [address[0], address[1], address[2], address[3], address[4], address[5], address[6], address[7], address[8]];
         let address_high = [address[9], address[10], address[11]];
         mux8way16(
@@ -254,7 +254,7 @@ impl RAM4K {
 
 #[derive(Debug, Clone)]
 pub struct RAM4KBuiltIn {
-    ram: Vec<word>,
+    ram: Vec<Word>,
 }
 
 impl RAM4KBuiltIn {
@@ -266,11 +266,11 @@ impl RAM4KBuiltIn {
         RAM4KBuiltIn { ram }
     }
 
-    pub fn update(&mut self, _clk: bit, input: word, _load: bit, address: [bit; 12]) {
+    pub fn update(&mut self, _clk: Binary, input: Word, _load: Binary, address: [Binary; 12]) {
         self.ram[bit12_to_u16(address) as usize] = input;
     }
 
-    pub fn get(&self, _clk: bit, address: [bit; 12]) -> word {
+    pub fn get(&self, _clk: Binary, address: [Binary; 12]) -> Word {
         self.ram[bit12_to_u16(address) as usize]
     }
 }
@@ -290,7 +290,7 @@ impl RAM16K {
         RAM16K { rams }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 14]) {
+    pub fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 14]) {
         let address_low = [
             address[0], address[1], address[2], address[3],
             address[4], address[5], address[6], address[7],
@@ -304,7 +304,7 @@ impl RAM16K {
         self.rams[3].update(clk, input, d, address_low);
     }
 
-    pub fn get(&self, clk: bit, address: [bit; 14]) -> word {
+    pub fn get(&self, clk: Binary, address: [Binary; 14]) -> Word {
         let address_low = [
             address[0], address[1], address[2], address[3],
             address[4], address[5], address[6], address[7],
@@ -323,7 +323,7 @@ impl RAM16K {
 
 #[derive(Debug, Clone)]
 pub struct RAM16KBuiltIn {
-    ram: Vec<word>,
+    ram: Vec<Word>,
 }
 
 impl RAM16KBuiltIn {
@@ -335,13 +335,13 @@ impl RAM16KBuiltIn {
         RAM16KBuiltIn { ram }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, load: bit, address: [bit; 14]) {
+    pub fn update(&mut self, clk: Binary, input: Word, load: Binary, address: [Binary; 14]) {
         if clk && load {
             self.ram[bit14_to_u16(address) as usize] = input;
         }
     }
 
-    pub fn get(&self, _clk: bit, address: [bit; 14]) -> word {
+    pub fn get(&self, _clk: Binary, address: [Binary; 14]) -> Word {
         self.ram[bit14_to_u16(address) as usize]
     }
 }
@@ -356,7 +356,7 @@ impl PC {
         PC { counter: Register::new() }
     }
 
-    pub fn update(&mut self, clk: bit, input: word, load: bit, inc: bit, reset: bit) {
+    pub fn update(&mut self, clk: Binary, input: Word, load: Binary, inc: Binary, reset: Binary) {
         let out0 = self.get(!clk);
         // let incout = add16(out0, u16_to_word(0b0000_0000_0000_0001));
         let incout = inc16(out0);
@@ -371,7 +371,7 @@ impl PC {
         self.counter.update(clk, out2, true);
     }
 
-    pub fn get(&self, clk: bit) -> word {
+    pub fn get(&self, clk: Binary) -> Word {
         self.counter.get(clk)
     }
 }
