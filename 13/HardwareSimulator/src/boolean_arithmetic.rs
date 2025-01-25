@@ -77,10 +77,6 @@ pub fn inc16(input: word) -> word {
     add16(input, u16_to_word(0b0000_0000_0000_0001))
 }
 
-pub fn inc16_built_in(input: word) -> word {
-    add16_built_in(input, u16_to_word(0b0000_0000_0000_0001))
-}
-
 pub fn alu(
     x: word,
     y: word, 
