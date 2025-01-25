@@ -1488,10 +1488,10 @@ mod tests {
         let mut keyboard = Keyboard::new();
 
         let word_0 = u16_to_word(0b0000_0000_0000_0000);
-        let word_a = u16_to_word(0b0000_0000_0100_0001);  // a
-        let word_A = u16_to_word(0b0000_0000_0110_0001);  // A
+        let word_a1 = u16_to_word(0b0000_0000_0100_0001);  // a
+        let word_a2 = u16_to_word(0b0000_0000_0110_0001);  // A
         
-        let mut word = word_a;
+        let mut word = word_a1;
         keyboard.update(clk, word);
         let mut key_code = keyboard.get(clk);
         assert_eq!(word_0, key_code);
@@ -1500,20 +1500,20 @@ mod tests {
 
         keyboard.update(clk, word);
         key_code = keyboard.get(clk);
-        assert_eq!(word_a, key_code);
+        assert_eq!(word_a1, key_code);
 
         clk = !clk;
-        word = word_A;
+        word = word_a2;
 
         keyboard.update(clk, word);
         key_code = keyboard.get(clk);
-        assert_eq!(word_a, key_code);
+        assert_eq!(word_a1, key_code);
 
         clk = !clk;
 
         keyboard.update(clk, word);
         key_code = keyboard.get(clk);
-        assert_eq!(word_A, key_code);
+        assert_eq!(word_a2, key_code);
     }
 
     #[test]
