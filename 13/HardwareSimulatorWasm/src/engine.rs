@@ -28,7 +28,7 @@ impl Renderer {
 
 #[async_trait(?Send)]
 pub trait ComputerSystem {
-    async fn initialize(&mut self, renderer: &Renderer, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>>;
+    async fn initialize(&mut self, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>>;
     fn update(&mut self, keystate: &KeyState);
     fn draw(&self, renderer: &Renderer);
 }
@@ -60,7 +60,7 @@ impl ComputerSystemLoop {
 
         let mut keystate = KeyState::new();
 
-        let mut computer_system = computer_system.initialize(&renderer, &keystate).await?;
+        let mut computer_system = computer_system.initialize(&keystate).await?;
         *g.borrow_mut() = Some(browser::create_raf_closure(move |perf: f64| {
             process_input(&mut keystate, &mut keyevent_receiver);
 

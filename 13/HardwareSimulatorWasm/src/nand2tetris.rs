@@ -155,7 +155,7 @@ impl Nand2Tetris {
 
 #[async_trait(?Send)]
 impl ComputerSystem for Nand2Tetris {
-    async fn initialize(&mut self, renderer: &Renderer, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>> {
+    async fn initialize(&mut self, keystate: &KeyState) -> Result<Box<dyn ComputerSystem>> {
         let mut nand2tetris = Box::new(Nand2Tetris::new());
         nand2tetris.computer.step(true, Nand2Tetris::get_keyboard_press_code(keystate));
         Ok(nand2tetris)
