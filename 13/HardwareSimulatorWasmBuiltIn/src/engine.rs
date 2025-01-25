@@ -75,7 +75,7 @@ impl ComputerSystemLoop {
             computer_system_loop.last_frame = perf;
             computer_system.draw(&renderer);
 
-            browser::request_animation_frame(f.borrow().as_ref().unwrap());
+            let _ = browser::request_animation_frame(f.borrow().as_ref().unwrap());
         }));
 
         browser::request_animation_frame(
@@ -134,13 +134,13 @@ fn prepare_input() -> Result<UnboundedReceiver<KeyPress>> {
     let keydown_sender = Rc::new(RefCell::new(keydown_sender));
     let keyup_sender = Rc::clone(&keydown_sender);
     let onkeydown = browser::closure_wrap(Box::new(move |keycode: web_sys::KeyboardEvent| {
-        keydown_sender
+        let _ = keydown_sender
             .borrow_mut()
             .start_send(KeyPress::KeyDown(keycode));
     }) as Box<dyn FnMut(web_sys::KeyboardEvent)>);
 
     let onkeyup = browser::closure_wrap(Box::new(move |keycode: web_sys::KeyboardEvent| {
-        keyup_sender
+        let _ = keyup_sender
             .borrow_mut()
             .start_send(KeyPress::KeyUp(keycode));
     }) as Box<dyn FnMut(web_sys::KeyboardEvent)>);
