@@ -9,5 +9,5 @@ cargo run
 
 # execute (release build)
 cargo build --release
-./target/release/HardwareSimulatorSdl
+./target/release/hardware_simulator_sdl
 ```
