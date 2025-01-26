@@ -5,4 +5,4 @@ edition = "2021"
 
 [dependencies]
 sdl2 = "0.32.0"
-cpu_emulator = { path = "../CpuEmulator" }
+cpu_emulator = { path = "../cpu_emulator" }
