@@ -13,7 +13,7 @@ pub fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
     let window = video_subsystem
-        .window("Nand2Tetris HardwareSimulator", 1024, 512)
+        .window("Nand2Tetris CpuEmulator", 1024, 512)
         .position_centered()
         .build()
         .unwrap();
