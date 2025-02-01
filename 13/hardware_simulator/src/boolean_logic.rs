@@ -71,7 +71,8 @@ pub fn and16_built_in(a: Word, b: Word) -> Word {
     word
 }
 
-pub fn or16(a: Word, b: Word) -> Word {
+#[allow(dead_code)]
+fn or16(a: Word, b: Word) -> Word {
     let mut word = u16_to_word(0b0000_0000_0000_0000);
     for i in 0..16 {
         word[i] = or(a[i],  b[i]);
