@@ -2,9 +2,9 @@ mod instruction;
 
 use instruction::{
     Instruction,
-    CComp as InstructionCComp,
-    CDest as InstructionCDest,
-    CJump as InstructionCJump,
+    Comp as InstructionCComp,
+    Dest as InstructionCDest,
+    Jump as InstructionCJump,
 };
 
 #[derive(Clone)]
