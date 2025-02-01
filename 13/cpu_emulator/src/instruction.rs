@@ -62,15 +62,15 @@ pub enum Instruction {
 
 impl Instruction {
     pub fn new(instruction: &str) -> Self {
-        let inst = Self::decode_instruction(instruction);
+        let inst = Self::decode_to_binary(instruction);
         if Self::is_a_instruction(inst) {
             Self::A(inst)
         }
         else if Self::is_c_instruction(inst) {
             Self::C(
-                Self::decode_instruction_c_comp(inst),
-                Self::decode_instruction_c_dest(inst),
-                Self::decode_instruction_c_jump(inst),
+                Self::decode_c_comp(inst),
+                Self::decode_c_dest(inst),
+                Self::decode_c_jump(inst),
             )
         }
         else {
@@ -78,7 +78,7 @@ impl Instruction {
         }
     }
 
-    fn decode_instruction(instruction: &str) -> u16 {
+    fn decode_to_binary(instruction: &str) -> u16 {
         let mut inst: u16 = 0b0000000000000000;
         let mut bit: u16 = 0b1000000000000000;
         for (_, c) in instruction.chars().enumerate() {
@@ -96,7 +96,7 @@ impl Instruction {
         inst & 0b1110000000000000 == 0b1110000000000000
     }
 
-    fn decode_instruction_c_comp(inst: u16) -> InstructionCComp {
+    fn decode_c_comp(inst: u16) -> InstructionCComp {
         let comp = (inst & 0b0001111111000000) >> 6;
         match comp {
             0b0101010 => InstructionCComp::Zero,        /* 0 */
@@ -131,7 +131,7 @@ impl Instruction {
         }
     }
 
-    fn decode_instruction_c_dest(inst: u16) -> InstructionCDest {
+    fn decode_c_dest(inst: u16) -> InstructionCDest {
         let dest = (inst & 0b0000000000111000) >> 3;
         match dest {
             0b000 => InstructionCDest::Null,            /* null */
@@ -146,7 +146,7 @@ impl Instruction {
         }
     }
 
-    fn decode_instruction_c_jump(inst: u16) -> InstructionCJump {
+    fn decode_c_jump(inst: u16) -> InstructionCJump {
         let jump = inst & 0b0000000000000111;
         match jump {
             0b000 => InstructionCJump::None,                    /* none */
@@ -173,8 +173,8 @@ mod tests {
     #[case("0110000000000000", 0b0110000000000000)]
     #[case("1111110000010000", 0b1111110000010000)]
     #[case("0000000000001000", 0b0000000000001000)]
-    fn test_decode_instruction(#[case] input: &str, #[case] output: u16) {
-        assert_eq!(output, Instruction::decode_instruction(input));
+    fn test_decode_to_binary(#[case] input: &str, #[case] output: u16) {
+        assert_eq!(output, Instruction::decode_to_binary(input));
     }
 
     #[rstest]
@@ -220,7 +220,7 @@ mod tests {
     #[case(0b1111000000000000, InstructionCComp::DAndM)]
     #[case(0b1110010101000000, InstructionCComp::DOrA)]
     #[case(0b1111010101000000, InstructionCComp::AOrM)]
-    fn test_decode_instruction_c_comp(#[case] input: u16, #[case] output: InstructionCComp) {
-        assert_eq!(output, Instruction::decode_instruction_c_comp(input));
+    fn test_decode_c_comp(#[case] input: u16, #[case] output: InstructionCComp) {
+        assert_eq!(output, Instruction::decode_c_comp(input));
     }
 }
