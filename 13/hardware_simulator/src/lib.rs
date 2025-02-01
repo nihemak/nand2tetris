@@ -1,9 +1,10 @@
-pub mod boolean_logic;
+mod boolean_logic;
 #[allow(dead_code)]
 mod helper;
 mod boolean_arithmetic;
 mod sequential_circuit;
 
+pub use boolean_logic::Binary;
 use boolean_logic::*;
 use helper::*;
 use boolean_arithmetic::*;
