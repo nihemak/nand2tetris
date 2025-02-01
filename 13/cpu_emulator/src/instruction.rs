@@ -30,7 +30,7 @@ pub enum InstructionCComp {
     AOrM,       /* D|M */
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum InstructionCDest {
     Null,           /* null */
     RamA,           /* RAM[A] */
@@ -42,7 +42,7 @@ pub enum InstructionCDest {
     AAndDAndRamA,   /* A, D, RAM[A] */
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum InstructionCJump {
     None,                   /* none */
     GreaterThan,            /* if comp > 0 jump */
@@ -54,7 +54,7 @@ pub enum InstructionCJump {
     True,                   /* if true jump */
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum Instruction {
     A(u16),
     C(InstructionCComp, InstructionCDest, InstructionCJump),
@@ -222,5 +222,39 @@ mod tests {
     #[case(0b1111_0101_0100_0000, InstructionCComp::AOrM)]
     fn test_decode_c_comp(#[case] input: u16, #[case] output: InstructionCComp) {
         assert_eq!(output, Instruction::decode_c_comp(input));
+    }
+
+    #[rstest]
+    #[case(0b1110_0000_0000_0000, InstructionCDest::Null)]
+    #[case(0b1110_0000_0000_1000, InstructionCDest::RamA)]
+    #[case(0b1110_0000_0001_0000, InstructionCDest::D)]
+    #[case(0b1110_0000_0001_1000, InstructionCDest::DAndRamA)]
+    #[case(0b1110_0000_0010_0000, InstructionCDest::A)]
+    #[case(0b1110_0000_0010_1000, InstructionCDest::AAndRamA)]
+    #[case(0b1110_0000_0011_0000, InstructionCDest::AAndD)]
+    #[case(0b1110_0000_0011_1000, InstructionCDest::AAndDAndRamA)]
+    fn test_decode_c_dest(#[case] input: u16, #[case] output: InstructionCDest) {
+        assert_eq!(output, Instruction::decode_c_dest(input));
+    }
+
+    #[rstest]
+    #[case(0b1110_0000_0000_0000, InstructionCJump::None)]
+    #[case(0b1110_0000_0000_0001, InstructionCJump::GreaterThan)]
+    #[case(0b1110_0000_0000_0010, InstructionCJump::EqualTo)]
+    #[case(0b1110_0000_0000_0011, InstructionCJump::GreaterThanAndEqualTo)]
+    #[case(0b1110_0000_0000_0100, InstructionCJump::LessThan)]
+    #[case(0b1110_0000_0000_0101, InstructionCJump::NotEqualTo)]
+    #[case(0b1110_0000_0000_0110, InstructionCJump::LessThanAndEqualTo)]
+    #[case(0b1110_0000_0000_0111, InstructionCJump::True)]
+    fn test_decode_c_jump(#[case] input: u16, #[case] output: InstructionCJump) {
+        assert_eq!(output, Instruction::decode_c_jump(input));
+    }
+
+    #[rstest]
+    #[case("0000000000000000", Instruction::A(0b0000_0000_0000_0000))]
+    #[case("0101010000000001", Instruction::A(0b0101_0100_0000_0001))]
+    #[case("1110111111101011", Instruction::C(InstructionCComp::One, InstructionCDest::AAndRamA, InstructionCJump::GreaterThanAndEqualTo))]
+    fn test_instruction(#[case] input: &str, #[case] output: Instruction) {
+        assert_eq!(output, Instruction::new(input));
     }
 }
