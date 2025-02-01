@@ -1,5 +1,11 @@
 #[derive(Clone, PartialEq, Debug)]
-pub enum InstructionCComp {
+pub enum Instruction {
+    A(u16),
+    C(CComp, CDest, CJump),
+}
+
+#[derive(Clone, PartialEq, Debug)]
+pub enum CComp {
     Zero,       /* 0 */
     One,        /* 1 */
     MinusOne,   /* -1 */
@@ -31,7 +37,7 @@ pub enum InstructionCComp {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub enum InstructionCDest {
+pub enum CDest {
     Null,           /* null */
     RamA,           /* RAM[A] */
     D,              /* D */
@@ -43,7 +49,7 @@ pub enum InstructionCDest {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub enum InstructionCJump {
+pub enum CJump {
     None,                   /* none */
     GreaterThan,            /* if comp > 0 jump */
     EqualTo,                /* if comp = 0 jump */
@@ -52,12 +58,6 @@ pub enum InstructionCJump {
     NotEqualTo,             /* if comp != 0 jump */
     LessThanAndEqualTo,     /* if comp <= 0 jump */
     True,                   /* if true jump */
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum Instruction {
-    A(u16),
-    C(InstructionCComp, InstructionCDest, InstructionCJump),
 }
 
 impl Instruction {
@@ -96,67 +96,67 @@ impl Instruction {
         inst & 0b1110_0000_0000_0000 == 0b1110_0000_0000_0000
     }
 
-    fn decode_c_comp(inst: u16) -> InstructionCComp {
+    fn decode_c_comp(inst: u16) -> CComp {
         let comp = (inst & 0b0001_1111_1100_0000) >> 6;
         match comp {
-            0b0_101010 => InstructionCComp::Zero,        /* 0 */
-            0b0_111111 => InstructionCComp::One,         /* 1 */
-            0b0_111010 => InstructionCComp::MinusOne,    /* -1 */
-            0b0_001100 => InstructionCComp::D,           /* D */
-            0b0_110000 => InstructionCComp::A,           /* A */
-            0b1_110000 => InstructionCComp::M,           /* M */
-            0b0_001101 => InstructionCComp::NotD,        /* !D */
-            0b0_110001 => InstructionCComp::NotA,        /* !A */
-            0b1_110001 => InstructionCComp::NotM,        /* !M */
-            0b0_001111 => InstructionCComp::MinusD,      /* -D */
-            0b0_110011 => InstructionCComp::MinusA,      /* -A */
-            0b1_110011 => InstructionCComp::MinusM,      /* -M */
-            0b0_011111 => InstructionCComp::DPlusOne,    /* D+1 */
-            0b0_110111 => InstructionCComp::APlusOne,    /* A+1 */
-            0b1_110111 => InstructionCComp::MPlusOne,    /* M+1 */
-            0b0_001110 => InstructionCComp::DMinusOne,   /* D-1 */
-            0b0_110010 => InstructionCComp::AMinusOne,   /* A-1 */
-            0b1_110010 => InstructionCComp::MMinusOne,   /* M-1 */
-            0b0_000010 => InstructionCComp::DPlusA,      /* D+A */
-            0b1_000010 => InstructionCComp::DPlusM,      /* D+M */
-            0b0_010011 => InstructionCComp::DMinusA,     /* D-A */
-            0b1_010011 => InstructionCComp::DMinusM,     /* D-M */
-            0b0_000111 => InstructionCComp::AMinusD,     /* A-D */
-            0b1_000111 => InstructionCComp::MMinusD,     /* M-D */
-            0b0_000000 => InstructionCComp::DAndA,       /* D&A */
-            0b1_000000 => InstructionCComp::DAndM,       /* D&M */
-            0b0_010101 => InstructionCComp::DOrA,        /* D|A */
-            0b1_010101 => InstructionCComp::AOrM,        /* D|M */
+            0b0_101010 => CComp::Zero,        /* 0 */
+            0b0_111111 => CComp::One,         /* 1 */
+            0b0_111010 => CComp::MinusOne,    /* -1 */
+            0b0_001100 => CComp::D,           /* D */
+            0b0_110000 => CComp::A,           /* A */
+            0b1_110000 => CComp::M,           /* M */
+            0b0_001101 => CComp::NotD,        /* !D */
+            0b0_110001 => CComp::NotA,        /* !A */
+            0b1_110001 => CComp::NotM,        /* !M */
+            0b0_001111 => CComp::MinusD,      /* -D */
+            0b0_110011 => CComp::MinusA,      /* -A */
+            0b1_110011 => CComp::MinusM,      /* -M */
+            0b0_011111 => CComp::DPlusOne,    /* D+1 */
+            0b0_110111 => CComp::APlusOne,    /* A+1 */
+            0b1_110111 => CComp::MPlusOne,    /* M+1 */
+            0b0_001110 => CComp::DMinusOne,   /* D-1 */
+            0b0_110010 => CComp::AMinusOne,   /* A-1 */
+            0b1_110010 => CComp::MMinusOne,   /* M-1 */
+            0b0_000010 => CComp::DPlusA,      /* D+A */
+            0b1_000010 => CComp::DPlusM,      /* D+M */
+            0b0_010011 => CComp::DMinusA,     /* D-A */
+            0b1_010011 => CComp::DMinusM,     /* D-M */
+            0b0_000111 => CComp::AMinusD,     /* A-D */
+            0b1_000111 => CComp::MMinusD,     /* M-D */
+            0b0_000000 => CComp::DAndA,       /* D&A */
+            0b1_000000 => CComp::DAndM,       /* D&M */
+            0b0_010101 => CComp::DOrA,        /* D|A */
+            0b1_010101 => CComp::AOrM,        /* D|M */
             _ => panic!("error: comp {:#018b}", comp),
         }
     }
 
-    fn decode_c_dest(inst: u16) -> InstructionCDest {
+    fn decode_c_dest(inst: u16) -> CDest {
         let dest = (inst & 0b0000_0000_0011_1000) >> 3;
         match dest {
-            0b000 => InstructionCDest::Null,            /* null */
-            0b001 => InstructionCDest::RamA,            /* RAM[A] */
-            0b010 => InstructionCDest::D,               /* D */
-            0b011 => InstructionCDest::DAndRamA,        /* D, RAM[A] */
-            0b100 => InstructionCDest::A,               /* A */
-            0b101 => InstructionCDest::AAndRamA,        /* A, RAM[A] */
-            0b110 => InstructionCDest::AAndD,           /* A, D */
-            0b111 => InstructionCDest::AAndDAndRamA,    /* A, D, RAM[A] */
+            0b000 => CDest::Null,            /* null */
+            0b001 => CDest::RamA,            /* RAM[A] */
+            0b010 => CDest::D,               /* D */
+            0b011 => CDest::DAndRamA,        /* D, RAM[A] */
+            0b100 => CDest::A,               /* A */
+            0b101 => CDest::AAndRamA,        /* A, RAM[A] */
+            0b110 => CDest::AAndD,           /* A, D */
+            0b111 => CDest::AAndDAndRamA,    /* A, D, RAM[A] */
             _ => panic!("error: dest {:#018b}", dest),
         }
     }
 
-    fn decode_c_jump(inst: u16) -> InstructionCJump {
+    fn decode_c_jump(inst: u16) -> CJump {
         let jump = inst & 0b0000_0000_0000_0111;
         match jump {
-            0b000 => InstructionCJump::None,                    /* none */
-            0b001 => InstructionCJump::GreaterThan,             /* if comp > 0 jump */
-            0b010 => InstructionCJump::EqualTo,                 /* if comp = 0 jump */
-            0b011 => InstructionCJump::GreaterThanAndEqualTo,   /* if comp >= 0 jump */
-            0b100 => InstructionCJump::LessThan,                /* if comp < 0 jump */
-            0b101 => InstructionCJump::NotEqualTo,              /* if comp != 0 jump */
-            0b110 => InstructionCJump::LessThanAndEqualTo,      /* if comp <= 0 jump */
-            0b111 => InstructionCJump::True,                    /* if true jump */
+            0b000 => CJump::None,                    /* none */
+            0b001 => CJump::GreaterThan,             /* if comp > 0 jump */
+            0b010 => CJump::EqualTo,                 /* if comp = 0 jump */
+            0b011 => CJump::GreaterThanAndEqualTo,   /* if comp >= 0 jump */
+            0b100 => CJump::LessThan,                /* if comp < 0 jump */
+            0b101 => CJump::NotEqualTo,              /* if comp != 0 jump */
+            0b110 => CJump::LessThanAndEqualTo,      /* if comp <= 0 jump */
+            0b111 => CJump::True,                    /* if true jump */
             _ => panic!("error: jump {:#018b}", jump),
         }
     }
@@ -192,68 +192,68 @@ mod tests {
     }
 
     #[rstest]
-    #[case(0b1110_1010_1000_0000, InstructionCComp::Zero)]
-    #[case(0b1110_1111_1100_0000, InstructionCComp::One)]
-    #[case(0b1110_1110_1000_0000, InstructionCComp::MinusOne)]
-    #[case(0b1110_0011_0000_0000, InstructionCComp::D)]
-    #[case(0b1110_1100_0000_0000, InstructionCComp::A)]
-    #[case(0b1111_1100_0000_0000, InstructionCComp::M)]
-    #[case(0b1110_0011_0100_0000, InstructionCComp::NotD)]
-    #[case(0b1110_1100_0100_0000, InstructionCComp::NotA)]
-    #[case(0b1111_1100_0100_0000, InstructionCComp::NotM)]
-    #[case(0b1110_0011_1100_0000, InstructionCComp::MinusD)]
-    #[case(0b1110_1100_1100_0000, InstructionCComp::MinusA)]
-    #[case(0b1111_1100_1100_0000, InstructionCComp::MinusM)]
-    #[case(0b1110_0111_1100_0000, InstructionCComp::DPlusOne)]
-    #[case(0b1110_1101_1100_0000, InstructionCComp::APlusOne)]
-    #[case(0b1111_1101_1100_0000, InstructionCComp::MPlusOne)]
-    #[case(0b1110_0011_1000_0000, InstructionCComp::DMinusOne)]
-    #[case(0b1110_1100_1000_0000, InstructionCComp::AMinusOne)]
-    #[case(0b1111_1100_1000_0000, InstructionCComp::MMinusOne)]
-    #[case(0b1110_0000_1000_0000, InstructionCComp::DPlusA)]
-    #[case(0b1111_0000_1000_0000, InstructionCComp::DPlusM)]
-    #[case(0b1110_0100_1100_0000, InstructionCComp::DMinusA)]
-    #[case(0b1111_0100_1100_0000, InstructionCComp::DMinusM)]
-    #[case(0b1110_0001_1100_0000, InstructionCComp::AMinusD)]
-    #[case(0b1111_0001_1100_0000, InstructionCComp::MMinusD)]
-    #[case(0b1110_0000_0000_0000, InstructionCComp::DAndA)]
-    #[case(0b1111_0000_0000_0000, InstructionCComp::DAndM)]
-    #[case(0b1110_0101_0100_0000, InstructionCComp::DOrA)]
-    #[case(0b1111_0101_0100_0000, InstructionCComp::AOrM)]
-    fn test_decode_c_comp(#[case] input: u16, #[case] output: InstructionCComp) {
+    #[case(0b1110_1010_1000_0000, CComp::Zero)]
+    #[case(0b1110_1111_1100_0000, CComp::One)]
+    #[case(0b1110_1110_1000_0000, CComp::MinusOne)]
+    #[case(0b1110_0011_0000_0000, CComp::D)]
+    #[case(0b1110_1100_0000_0000, CComp::A)]
+    #[case(0b1111_1100_0000_0000, CComp::M)]
+    #[case(0b1110_0011_0100_0000, CComp::NotD)]
+    #[case(0b1110_1100_0100_0000, CComp::NotA)]
+    #[case(0b1111_1100_0100_0000, CComp::NotM)]
+    #[case(0b1110_0011_1100_0000, CComp::MinusD)]
+    #[case(0b1110_1100_1100_0000, CComp::MinusA)]
+    #[case(0b1111_1100_1100_0000, CComp::MinusM)]
+    #[case(0b1110_0111_1100_0000, CComp::DPlusOne)]
+    #[case(0b1110_1101_1100_0000, CComp::APlusOne)]
+    #[case(0b1111_1101_1100_0000, CComp::MPlusOne)]
+    #[case(0b1110_0011_1000_0000, CComp::DMinusOne)]
+    #[case(0b1110_1100_1000_0000, CComp::AMinusOne)]
+    #[case(0b1111_1100_1000_0000, CComp::MMinusOne)]
+    #[case(0b1110_0000_1000_0000, CComp::DPlusA)]
+    #[case(0b1111_0000_1000_0000, CComp::DPlusM)]
+    #[case(0b1110_0100_1100_0000, CComp::DMinusA)]
+    #[case(0b1111_0100_1100_0000, CComp::DMinusM)]
+    #[case(0b1110_0001_1100_0000, CComp::AMinusD)]
+    #[case(0b1111_0001_1100_0000, CComp::MMinusD)]
+    #[case(0b1110_0000_0000_0000, CComp::DAndA)]
+    #[case(0b1111_0000_0000_0000, CComp::DAndM)]
+    #[case(0b1110_0101_0100_0000, CComp::DOrA)]
+    #[case(0b1111_0101_0100_0000, CComp::AOrM)]
+    fn test_decode_c_comp(#[case] input: u16, #[case] output: CComp) {
         assert_eq!(output, Instruction::decode_c_comp(input));
     }
 
     #[rstest]
-    #[case(0b1110_0000_0000_0000, InstructionCDest::Null)]
-    #[case(0b1110_0000_0000_1000, InstructionCDest::RamA)]
-    #[case(0b1110_0000_0001_0000, InstructionCDest::D)]
-    #[case(0b1110_0000_0001_1000, InstructionCDest::DAndRamA)]
-    #[case(0b1110_0000_0010_0000, InstructionCDest::A)]
-    #[case(0b1110_0000_0010_1000, InstructionCDest::AAndRamA)]
-    #[case(0b1110_0000_0011_0000, InstructionCDest::AAndD)]
-    #[case(0b1110_0000_0011_1000, InstructionCDest::AAndDAndRamA)]
-    fn test_decode_c_dest(#[case] input: u16, #[case] output: InstructionCDest) {
+    #[case(0b1110_0000_0000_0000, CDest::Null)]
+    #[case(0b1110_0000_0000_1000, CDest::RamA)]
+    #[case(0b1110_0000_0001_0000, CDest::D)]
+    #[case(0b1110_0000_0001_1000, CDest::DAndRamA)]
+    #[case(0b1110_0000_0010_0000, CDest::A)]
+    #[case(0b1110_0000_0010_1000, CDest::AAndRamA)]
+    #[case(0b1110_0000_0011_0000, CDest::AAndD)]
+    #[case(0b1110_0000_0011_1000, CDest::AAndDAndRamA)]
+    fn test_decode_c_dest(#[case] input: u16, #[case] output: CDest) {
         assert_eq!(output, Instruction::decode_c_dest(input));
     }
 
     #[rstest]
-    #[case(0b1110_0000_0000_0000, InstructionCJump::None)]
-    #[case(0b1110_0000_0000_0001, InstructionCJump::GreaterThan)]
-    #[case(0b1110_0000_0000_0010, InstructionCJump::EqualTo)]
-    #[case(0b1110_0000_0000_0011, InstructionCJump::GreaterThanAndEqualTo)]
-    #[case(0b1110_0000_0000_0100, InstructionCJump::LessThan)]
-    #[case(0b1110_0000_0000_0101, InstructionCJump::NotEqualTo)]
-    #[case(0b1110_0000_0000_0110, InstructionCJump::LessThanAndEqualTo)]
-    #[case(0b1110_0000_0000_0111, InstructionCJump::True)]
-    fn test_decode_c_jump(#[case] input: u16, #[case] output: InstructionCJump) {
+    #[case(0b1110_0000_0000_0000, CJump::None)]
+    #[case(0b1110_0000_0000_0001, CJump::GreaterThan)]
+    #[case(0b1110_0000_0000_0010, CJump::EqualTo)]
+    #[case(0b1110_0000_0000_0011, CJump::GreaterThanAndEqualTo)]
+    #[case(0b1110_0000_0000_0100, CJump::LessThan)]
+    #[case(0b1110_0000_0000_0101, CJump::NotEqualTo)]
+    #[case(0b1110_0000_0000_0110, CJump::LessThanAndEqualTo)]
+    #[case(0b1110_0000_0000_0111, CJump::True)]
+    fn test_decode_c_jump(#[case] input: u16, #[case] output: CJump) {
         assert_eq!(output, Instruction::decode_c_jump(input));
     }
 
     #[rstest]
     #[case("0000000000000000", Instruction::A(0b0000_0000_0000_0000))]
     #[case("0101010000000001", Instruction::A(0b0101_0100_0000_0001))]
-    #[case("1110111111101011", Instruction::C(InstructionCComp::One, InstructionCDest::AAndRamA, InstructionCJump::GreaterThanAndEqualTo))]
+    #[case("1110111111101011", Instruction::C(CComp::One, CDest::AAndRamA, CJump::GreaterThanAndEqualTo))]
     fn test_instruction(#[case] input: &str, #[case] output: Instruction) {
         assert_eq!(output, Instruction::new(input));
     }

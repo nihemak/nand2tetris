@@ -1,6 +1,11 @@
 mod instruction;
 
-use instruction::*;
+use instruction::{
+    Instruction,
+    CComp as InstructionCComp,
+    CDest as InstructionCDest,
+    CJump as InstructionCJump,
+};
 
 #[derive(Clone)]
 pub struct Computer {
