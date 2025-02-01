@@ -33,7 +33,7 @@ pub enum CComp {
     DAndA,      /* D&A */
     DAndM,      /* D&M */
     DOrA,       /* D|A */
-    AOrM,       /* D|M */
+    DOrM,       /* D|M */
 }
 
 #[derive(Clone, PartialEq, Debug)]
@@ -126,7 +126,7 @@ impl Instruction {
             0b0_000000 => CComp::DAndA,       /* D&A */
             0b1_000000 => CComp::DAndM,       /* D&M */
             0b0_010101 => CComp::DOrA,        /* D|A */
-            0b1_010101 => CComp::AOrM,        /* D|M */
+            0b1_010101 => CComp::DOrM,        /* D|M */
             _ => panic!("error: comp {:#018b}", comp),
         }
     }
@@ -219,7 +219,7 @@ mod tests {
     #[case(0b1110_0000_0000_0000, CComp::DAndA)]
     #[case(0b1111_0000_0000_0000, CComp::DAndM)]
     #[case(0b1110_0101_0100_0000, CComp::DOrA)]
-    #[case(0b1111_0101_0100_0000, CComp::AOrM)]
+    #[case(0b1111_0101_0100_0000, CComp::DOrM)]
     fn test_decode_c_comp(#[case] input: u16, #[case] output: CComp) {
         assert_eq!(output, Instruction::decode_c_comp(input));
     }
