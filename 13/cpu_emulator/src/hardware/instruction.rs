@@ -190,4 +190,37 @@ mod tests {
     fn test_is_c_instruction(#[case] input: u16, #[case] output: bool) {
         assert_eq!(output, Instruction::is_c_instruction(input));
     }
+
+    #[rstest]
+    #[case(0b1110101010000000, InstructionCComp::Zero)]
+    #[case(0b1110111111000000, InstructionCComp::One)]
+    #[case(0b1110111010000000, InstructionCComp::MinusOne)]
+    #[case(0b1110001100000000, InstructionCComp::D)]
+    #[case(0b1110110000000000, InstructionCComp::A)]
+    #[case(0b1111110000000000, InstructionCComp::M)]
+    #[case(0b1110001101000000, InstructionCComp::NotD)]
+    #[case(0b1110110001000000, InstructionCComp::NotA)]
+    #[case(0b1111110001000000, InstructionCComp::NotM)]
+    #[case(0b1110001111000000, InstructionCComp::MinusD)]
+    #[case(0b1110110011000000, InstructionCComp::MinusA)]
+    #[case(0b1111110011000000, InstructionCComp::MinusM)]
+    #[case(0b1110011111000000, InstructionCComp::DPlusOne)]
+    #[case(0b1110110111000000, InstructionCComp::APlusOne)]
+    #[case(0b1111110111000000, InstructionCComp::MPlusOne)]
+    #[case(0b1110001110000000, InstructionCComp::DMinusOne)]
+    #[case(0b1110110010000000, InstructionCComp::AMinusOne)]
+    #[case(0b1111110010000000, InstructionCComp::MMinusOne)]
+    #[case(0b1110000010000000, InstructionCComp::DPlusA)]
+    #[case(0b1111000010000000, InstructionCComp::DPlusM)]
+    #[case(0b1110010011000000, InstructionCComp::DMinusA)]
+    #[case(0b1111010011000000, InstructionCComp::DMinusM)]
+    #[case(0b1110000111000000, InstructionCComp::AMinusD)]
+    #[case(0b1111000111000000, InstructionCComp::MMinusD)]
+    #[case(0b1110000000000000, InstructionCComp::DAndA)]
+    #[case(0b1111000000000000, InstructionCComp::DAndM)]
+    #[case(0b1110010101000000, InstructionCComp::DOrA)]
+    #[case(0b1111010101000000, InstructionCComp::AOrM)]
+    fn test_decode_instruction_c_comp(#[case] input: u16, #[case] output: InstructionCComp) {
+        assert_eq!(output, Instruction::decode_instruction_c_comp(input));
+    }
 }
