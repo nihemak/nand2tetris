@@ -1,6 +1,6 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use hardware_simulator::hardware::Computer;
+use hardware_simulator::Computer;
 
 use crate::{
     engine::{ComputerSystem, KeyState, Renderer},
