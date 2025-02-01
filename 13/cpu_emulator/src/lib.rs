@@ -16,8 +16,8 @@ impl Computer {
     pub fn new() -> Self {
         Computer {
             pc: 0,
-            a: 0b0000000000000000,
-            d: 0b0000000000000000,
+            a: 0b0000_0000_0000_0000,
+            d: 0b0000_0000_0000_0000,
             ram: Vec::new(),
             rom: Vec::new(),
             update_screen_addrs: Vec::new(),
@@ -27,7 +27,7 @@ impl Computer {
     fn reset_ram(&mut self) {
         self.ram.clear();
         for _ in 0..65535 {
-            self.ram.push(0b0000000000000000);
+            self.ram.push(0b0000_0000_0000_0000);
         }
     }
 
@@ -152,7 +152,7 @@ impl Computer {
         let mut x = 0;
         for i in 0..8192 {
             let word = self.ram[16384 /* SCREEN */ + i];
-            let mut bit: i16 = 0b0000000000000001;
+            let mut bit: i16 = 0b0000_0000_0000_0001;
             for _ in 0..16 {
                 if word & bit != 0 {
                     screen[x] = true;
@@ -169,7 +169,7 @@ impl Computer {
         for addr in &self.update_screen_addrs {
             let base = (addr - 16384 /* SCREEN */) * 16;
             let word = self.ram[*addr as usize];
-            let mut bit: i16 = 0b0000000000000001;
+            let mut bit: i16 = 0b0000_0000_0000_0001;
             for i in 0..16 {
                 let px: i32 = (base + i).into();
                 let x: i32 = px % 512;
