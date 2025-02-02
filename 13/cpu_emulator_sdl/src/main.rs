@@ -117,7 +117,7 @@ fn display_screen(canvas: &mut WindowCanvas, computer: &mut Computer) {
     }
 }
 
-fn get_keyboard_press_code(keystate: &KeyboardState) -> i16 {
+fn get_keyboard_press_code(keystate: &KeyboardState) -> u16 {
     if keystate.is_scancode_pressed(Scancode::Num0)  { 0b0000_0000_0011_0000 } else
     if keystate.is_scancode_pressed(Scancode::Num1)  { 0b0000_0000_0011_0001 } else
     if keystate.is_scancode_pressed(Scancode::Num2)  { 0b0000_0000_0011_0010 } else
