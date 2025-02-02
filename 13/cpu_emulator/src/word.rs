@@ -1,4 +1,5 @@
 use std::fmt;
+use std::ops;
 
 #[derive(Clone, Debug, Copy)]
 pub struct Word {
@@ -38,35 +39,64 @@ impl Word {
             -((!self.value).wrapping_add(0b0000_0000_0000_0001) as i16)
         }
     }
+}
 
-    pub fn not(&self) -> Self {
+impl ops::Not for Word {
+    type Output = Self;
+
+    fn not(self) -> Self::Output {
         Word {
             value: !self.value
         }
     }
+}
 
-    pub fn and(&self, word: &Word) -> Self {
+impl ops::BitAnd for Word {
+    type Output = Self;
+
+    fn bitand(self, rhs: Self) -> Self::Output {
         Word {
-            value: self.value & word.value
+            value: self.value & rhs.value
         }
     }
+}
 
-    pub fn or(&self, word: &Word) -> Self {
+impl ops::BitOr for Word {
+    type Output = Self;
+
+    fn bitor(self, rhs: Self) -> Self::Output {
         Word {
-            value: self.value | word.value
+            value: self.value | rhs.value
         }
     }
+}
 
-    pub fn add(&self, word: &Word) -> Self {
+impl ops::Add for Word {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
         Word {
-            value: self.value.wrapping_add(word.value)
+            value: self.value.wrapping_add(other.value)
         }
     }
+}
 
-    pub fn minus(&self) -> Self {
+impl ops::Neg for Word {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
         Word {
             value: (!self.value).wrapping_add(0b0000_0000_0000_0001)
         }
+    }
+}
+
+
+impl ops::Sub for Word {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self::Output {
+        self + -other
     }
 }
 
@@ -84,24 +114,28 @@ mod tests {
         assert_eq!(0b0000_0000_0000_0101, b.to_u16());
         assert_eq!(0b0000_0000_0000_0101, b.to_i16());
 
-        let a = a.not();
+        let a = !a;
         assert_eq!(0b1111_1111_1111_1111, a.to_u16());
         assert_eq!(-1, a.to_i16());
 
-        let a = a.minus();
+        let a = -a;
         assert_eq!(0b0000_0000_0000_0001, a.to_u16());
         assert_eq!(1, a.to_i16());
 
-        let a = a.or(&b);
+        let a = a | b;
         assert_eq!(0b0000_0000_0000_0101, a.to_u16());
         assert_eq!(5, a.to_i16());
 
-        let a = a.add(&b);
+        let a = a + b;
         assert_eq!(0b0000_0000_0000_1010, a.to_u16());
         assert_eq!(10, a.to_i16());
 
-        let a = a.and(&b);
+        let a = a & b;
         assert_eq!(0b0000_0000_0000_0000, a.to_u16());
         assert_eq!(0, a.to_i16());
+
+        let a = a - b;
+        assert_eq!(0b1111_1111_1111_1011, a.to_u16());
+        assert_eq!(-5, a.to_i16());
     }
 }
