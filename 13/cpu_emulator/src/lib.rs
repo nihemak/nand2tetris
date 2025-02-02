@@ -51,7 +51,7 @@ impl Computer {
         match inst {
             Instruction::A(a) => {
                 self.a = Word::from(*a);
-                self.pc = self.pc.add(&Word::from(1));
+                self.pc = self.pc + Word::from(1);
             },
             Instruction::C(comp, dest, jump) => {
                 let m = self.ram[self.a.to_u16() as usize];
@@ -100,7 +100,7 @@ impl Computer {
                 }
                 println!("pc {}, a {:#018b}, d {:#018b}, comp {}", self.pc, self.a, self.d, comp);
 
-                self.pc = if Self::jump(jump, &comp) { self.a.clone() } else { self.pc.add(&Word::from(1)) };
+                self.pc = if Self::jump(jump, &comp) { self.a.clone() } else { self.pc + Word::from(1) };
             },
         }
     }
@@ -119,34 +119,34 @@ impl Computer {
 
     fn comp(comp: &InstructionCComp, a: &Word, d: &Word, m: &Word) -> Word {
         match comp {
-            InstructionCComp::Zero      => Word::new(),                     /* 0 */
-            InstructionCComp::One       => Word::from(1),                   /* 1 */
-            InstructionCComp::MinusOne  => Word::from(1).minus(),           /* -1 */
-            InstructionCComp::D         => d.clone(),                       /* D */
-            InstructionCComp::A         => a.clone(),                       /* A */
-            InstructionCComp::M         => m.clone(),                       /* M */
-            InstructionCComp::NotD      => d.not(),                         /* !D */
-            InstructionCComp::NotA      => a.not(),                         /* !A */
-            InstructionCComp::NotM      => m.not(),                         /* !M */
-            InstructionCComp::MinusD    => d.minus(),                       /* -D */
-            InstructionCComp::MinusA    => a.minus(),                       /* -A */
-            InstructionCComp::MinusM    => m.minus(),                       /* -M */
-            InstructionCComp::DPlusOne  => d.add(&Word::from(1)),           /* D+1 */
-            InstructionCComp::APlusOne  => a.add(&Word::from(1)),           /* A+1 */
-            InstructionCComp::MPlusOne  => m.add(&Word::from(1)),           /* M+1 */
-            InstructionCComp::DMinusOne => d.add(&Word::from(1).minus()),   /* D-1 */
-            InstructionCComp::AMinusOne => a.add(&Word::from(1).minus()),   /* A-1 */
-            InstructionCComp::MMinusOne => m.add(&Word::from(1).minus()),   /* M-1 */
-            InstructionCComp::DPlusA    => d.add(&a),                       /* D+A */
-            InstructionCComp::DPlusM    => d.add(&m),                       /* D+M */
-            InstructionCComp::DMinusA   => d.add(&a.minus()),               /* D-A */
-            InstructionCComp::DMinusM   => d.add(&m.minus()),               /* D-M */
-            InstructionCComp::AMinusD   => a.add(&d.minus()),               /* A-D */
-            InstructionCComp::MMinusD   => m.add(&d.minus()),               /* M-D */
-            InstructionCComp::DAndA     => d.and(&a),                       /* D&A */
-            InstructionCComp::DAndM     => d.and(&m),                       /* D&M */
-            InstructionCComp::DOrA      => d.or(&a),                        /* D|A */
-            InstructionCComp::DOrM      => d.or(&m),                        /* D|M */
+            InstructionCComp::Zero      => Word::new(),             /* 0 */
+            InstructionCComp::One       => Word::from(1),           /* 1 */
+            InstructionCComp::MinusOne  => -Word::from(1),          /* -1 */
+            InstructionCComp::D         => d.clone(),               /* D */
+            InstructionCComp::A         => a.clone(),               /* A */
+            InstructionCComp::M         => m.clone(),               /* M */
+            InstructionCComp::NotD      => !(*d),                   /* !D */
+            InstructionCComp::NotA      => !(*a),                   /* !A */
+            InstructionCComp::NotM      => !(*m),                   /* !M */
+            InstructionCComp::MinusD    => -(*d),                   /* -D */
+            InstructionCComp::MinusA    => -(*a),                   /* -A */
+            InstructionCComp::MinusM    => -(*m),                   /* -M */
+            InstructionCComp::DPlusOne  => (*d) + Word::from(1),    /* D+1 */
+            InstructionCComp::APlusOne  => (*a) + Word::from(1),    /* A+1 */
+            InstructionCComp::MPlusOne  => (*m) + Word::from(1),    /* M+1 */
+            InstructionCComp::DMinusOne => (*d) - Word::from(1),    /* D-1 */
+            InstructionCComp::AMinusOne => (*a) - Word::from(1),    /* A-1 */
+            InstructionCComp::MMinusOne => (*m) - Word::from(1),    /* M-1 */
+            InstructionCComp::DPlusA    => (*d) + (*a),             /* D+A */
+            InstructionCComp::DPlusM    => (*d) + (*m),             /* D+M */
+            InstructionCComp::DMinusA   => (*d) - (*a),             /* D-A */
+            InstructionCComp::DMinusM   => (*d) - (*m),             /* D-M */
+            InstructionCComp::AMinusD   => (*a) - (*d),             /* A-D */
+            InstructionCComp::MMinusD   => (*m) - (*d),             /* M-D */
+            InstructionCComp::DAndA     => (*d) & (*a),             /* D&A */
+            InstructionCComp::DAndM     => (*d) & (*m),             /* D&M */
+            InstructionCComp::DOrA      => (*d) | (*a),             /* D|A */
+            InstructionCComp::DOrM      => (*d) | (*m),             /* D|M */
         }
     }
 
@@ -266,7 +266,7 @@ mod tests {
     fn test_jump(#[case] input: InstructionCJump, #[case] output: (bool, bool, bool)) {
         let (minus_one, zero, plus_one) = output;
 
-        let comp = Word::from(1).minus();   // -1
+        let comp = -Word::from(1);   // -1
         assert_eq!(minus_one, Computer::jump(&input, &comp));
 
         let comp = Word::new();  // 1
