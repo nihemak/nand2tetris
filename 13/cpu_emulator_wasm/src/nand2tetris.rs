@@ -76,7 +76,7 @@ impl Nand2Tetris {
         ]
     }
 
-    fn get_keyboard_press_code(keystate: &KeyState) -> i16 {
+    fn get_keyboard_press_code(keystate: &KeyState) -> u16 {
         if keystate.is_pressed("Digit0")     { 0b0000_0000_0011_0000 } else 
         if keystate.is_pressed("Digit1")     { 0b0000_0000_0011_0001 } else 
         if keystate.is_pressed("Digit2")     { 0b0000_0000_0011_0010 } else 
